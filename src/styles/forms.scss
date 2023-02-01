@@ -1,0 +1,11 @@
+@import 'colors';
+
+$input-bg: $FORM_FILL_GRAY !default;
+$input-placeholder-color: $LABEL_GRAY !default;
+$form-label-color: $LABEL_GRAY !default;
+$form-label-font-weight: 500 !default;
+$input-padding-x: 32px !default;
+$input-padding-y: 14px !default;
+
+// INVALID ICON SIZE
+$input-height-inner-half: 20px;

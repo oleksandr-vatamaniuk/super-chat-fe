@@ -1,1 +1,23 @@
-$TITLE_1: #1a1e2c;
+$BLACK: #000;
+$BLACK_100: #1a1e2c;
+
+$WHITE: #fff;
+
+$BACKGROUND_GRAY: #e5e5e5;
+$LABEL_GRAY: #6f7c8b;
+
+$FORM_FILL_GRAY: #f5f6f7;
+$LIGHT_GRAY: #eaedf3;
+
+$PRIMARY_BLUE: #4c6fff;
+$STATUS_BLUE: #2e5bff;
+
+// BTN PRIMARY
+//$primary: $LINK_BLUE;
+$btn-border-radius: 3px;
+$btn-font-size: 18px;
+$btn-padding-y: 13px;
+
+.grey-color {
+  color: $LABEL_GRAY;
+}

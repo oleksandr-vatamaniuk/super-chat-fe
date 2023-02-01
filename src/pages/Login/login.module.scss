@@ -1,0 +1,14 @@
+.img-column {
+  img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+}
+
+.form-block {
+  max-width: 465px;
+  min-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+}
