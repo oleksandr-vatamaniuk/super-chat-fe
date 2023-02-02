@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import styles from './login.module.scss'
-import * as Yup from 'yup'
-import SocialMediaButton from '../../components/buttons/social-media'
 import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import styles from './login.module.scss'
+import SocialMediaButton from '../../components/buttons/social-media'
+import { Link } from 'react-router-dom'
 
 interface SignInFormValues {
   email: string
@@ -26,7 +27,7 @@ const Login = () => {
       email: Yup.string().email().required('Email is required'),
       password: Yup.string()
         .required('Password is required')
-        .min(5, 'Password is too short - should be 5 chars minimum'),
+        .min(8, 'Password is too short - should be 8 chars minimum'),
     }),
     onSubmit: submitHandler,
   })
@@ -35,9 +36,10 @@ const Login = () => {
     <div className="container-fluid p-0">
       <div className="row p-0 m-0">
         <div className="col-md-5 p-0 d-none d-md-flex">
-          <div className={styles['img-column']}>
-            <img src="/images/login.jpeg" alt="Login image" />
-          </div>
+          <div
+            className={styles['img-column']}
+            style={{ backgroundImage: 'url(/images/login.jpeg)' }}
+          />
         </div>
         <div className="col-md-7">
           <div className="d-flex flex-column justify-content-between pt-5 p-4 min-h-100vh">
@@ -108,8 +110,8 @@ const Login = () => {
                 </SocialMediaButton>
               </div>
             </div>
-            <div className="text-center grey-color pb-4 pb-md-5">
-              Don&apos;t have an account <a href="/signup">Sign Up</a>
+            <div className="text-center grey-color pb-3">
+              Don&apos;t have an account <Link to="/signup">Sign Up</Link>
             </div>
           </div>
         </div>

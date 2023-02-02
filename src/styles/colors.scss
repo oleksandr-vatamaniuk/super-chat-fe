@@ -8,9 +8,11 @@ $LABEL_GRAY: #6f7c8b;
 
 $FORM_FILL_GRAY: #f5f6f7;
 $LIGHT_GRAY: #eaedf3;
+$GREY: #374a59;
 
 $PRIMARY_BLUE: #4c6fff;
 $STATUS_BLUE: #2e5bff;
+$HEADER_BLUE: #040d32;
 
 // BTN PRIMARY
 //$primary: $LINK_BLUE;
@@ -20,4 +22,8 @@ $btn-padding-y: 13px;
 
 .grey-color {
   color: $LABEL_GRAY;
+}
+
+.header-blue-background {
+  background-color: $HEADER_BLUE;
 }

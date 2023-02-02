@@ -1,7 +1,11 @@
 @import 'colors';
 
-h1 {
+h1,
+h2,
+h3 {
   color: $BLACK_100;
+}
+h1 {
   font-weight: 700;
   font-size: 2rem;
   line-height: 1.2;
@@ -20,6 +24,14 @@ a {
 
 small {
   font-size: 0.75rem !important;
+}
+
+article {
+  p {
+    color: $GREY;
+    font-size: 14px;
+    margin: 1.25rem 0;
+  }
 }
 
 .quoted {

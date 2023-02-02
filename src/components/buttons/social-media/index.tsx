@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import styles from './social-medial.module.scss'
 
-const SocialMediaButton: FC<{ children: any }> = ({ children }) => {
+const SocialMediaButton: FC<{ children: JSX.Element }> = ({ children }) => {
   return (
-    <a>
+    <a href="/">
       <div className={`${styles['social-button']}`}>{children}</div>
     </a>
   )
