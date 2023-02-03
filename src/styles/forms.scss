@@ -8,5 +8,14 @@ $form-label-font-weight: 500 !default;
 $input-padding-x: 32px !default;
 $input-padding-y: 14px !default;
 
-// INVALID ICON SIZE
+// INVALID FORM ICON SIZE
 $input-height-inner-half: 20px;
+
+.form-block {
+  max-width: 465px;
+  min-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+// DROPDOWN

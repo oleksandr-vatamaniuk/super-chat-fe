@@ -44,3 +44,20 @@
     }
   }
 }
+
+.btn-logout {
+  width: 100%;
+  font-weight: 500;
+  @include button-variant(
+    $FORM_FILL_GRAY,
+    darken($FORM_FILL_GRAY, 5%),
+    $BLACK_100,
+    darken($FORM_FILL_GRAY, 3%),
+    darken($FORM_FILL_GRAY, 5%),
+    $BLACK_100,
+    $FORM_FILL_GRAY,
+    $DARK_GRAY_100,
+    $BLACK_100
+  );
+  @include button-size('9px', '12px', '14px', '3px');
+}

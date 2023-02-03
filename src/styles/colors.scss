@@ -9,6 +9,9 @@ $LABEL_GRAY: #6f7c8b;
 $FORM_FILL_GRAY: #f5f6f7;
 $LIGHT_GRAY: #eaedf3;
 $GREY: #374a59;
+$DARK_GRAY_100: #6f7c8b;
+
+$BORDER_GREY: #eaedf3;
 
 $PRIMARY_BLUE: #4c6fff;
 $STATUS_BLUE: #2e5bff;
@@ -19,9 +22,21 @@ $HEADER_BLUE: #040d32;
 $btn-border-radius: 3px;
 $btn-font-size: 18px;
 $btn-padding-y: 13px;
+$border-color: $BORDER_GREY;
+
+// DROPDOWN
+$dropdown-min-width: 160px !default;
 
 .grey-color {
   color: $LABEL_GRAY;
+}
+
+.grey-color-100 {
+  color: rgba($DARK_GRAY_100, 0.5);
+}
+
+.grey-bg {
+  background-color: $FORM_FILL_GRAY;
 }
 
 .header-blue-background {
