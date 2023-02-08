@@ -45,6 +45,10 @@
   }
 }
 
+.btn-small {
+  @include button-size('10px', '40px', '14px', '3px');
+}
+
 .btn-logout {
   width: 100%;
   font-weight: 500;

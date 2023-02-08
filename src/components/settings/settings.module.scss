@@ -1,0 +1,57 @@
+@import '../../styles/colors';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+.settings-block {
+  max-width: 630px;
+  width: 100%;
+  margin-top: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  @include media-breakpoint-up(md) {
+    margin-top: 70px;
+  }
+}
+
+.settings-nav {
+  position: relative;
+  &:before {
+    content: '';
+    height: 1px;
+    width: 100%;
+    background: $BORDER_GREY;
+    position: absolute;
+    bottom: 0;
+  }
+  li {
+    a {
+      display: inline-block;
+      position: relative;
+      padding: 12px 6px;
+      color: $DARK_GRAY_50;
+      transition: all 0.3s ease-in-out;
+      text-decoration: none;
+      text-align: center;
+      font-size: 14px;
+      @include media-breakpoint-up(md) {
+        padding: 12px 18px;
+      }
+      &.active,
+      &:active,
+      &:hover {
+        text-decoration: none;
+        color: $PRIMARY_BLUE;
+        &:before {
+          content: '';
+          height: 1px;
+          width: 100%;
+          background: $PRIMARY_BLUE;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+      }
+    }
+  }
+}

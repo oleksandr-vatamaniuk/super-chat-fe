@@ -1,0 +1,15 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+.dropdown {
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08),
+    0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu-offset {
+  margin-left: -100%;
+  @include media-breakpoint-up(md) {
+    margin-left: 0;
+  }
+}

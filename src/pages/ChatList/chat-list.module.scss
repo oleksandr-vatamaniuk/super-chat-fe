@@ -14,19 +14,7 @@ $header-height: 70px;
   height: $header-height;
 }
 
-.user-avatar {
-  border-radius: 50%;
-  overflow: hidden;
-  img {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-  }
-}
-
-.dropdown-menu-offset {
-  margin-left: -100%;
-  @include media-breakpoint-up(md) {
-    margin-left: 0;
-  }
+.transition {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
 }

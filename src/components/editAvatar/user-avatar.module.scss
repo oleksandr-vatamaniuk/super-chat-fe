@@ -1,0 +1,55 @@
+@import '../../styles/colors';
+
+.dropzone {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+  padding: 60px 0;
+  position: relative;
+  clip-path: inset(0 round 0px 0 0px 0);
+  cursor: pointer;
+  &:before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: -7px;
+    right: -7px;
+    bottom: -7px;
+    border: 8px dashed $DARK_GRAY_50;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  &.focused {
+    background-color: $LIGHT_GRAY;
+    &:before {
+      border-color: #2196f3;
+    }
+  }
+  &.accept {
+    background-color: $FORM_FILL_GRAY;
+    &:before {
+      border-color: #00e676;
+    }
+  }
+  &.reject {
+    background-color: rgba(#ff1744, 0.4);
+    &:before {
+      border-color: #ff1744;
+    }
+  }
+}
+
+.dropzone_desk {
+  font-weight: 500;
+}
+
+.dropzone_link {
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  color: $PRIMARY_BLUE;
+}
