@@ -47,7 +47,7 @@ const UserProfile = () => {
         >
           <li className="fw-semibold d-md-none ps-2 ">Annette Black</li>
           <li>
-            <Link className="dropdown-item" to="/chat-list/settings/edit-profile">
+            <Link className="dropdown-item" to="/settings/edit-profile">
               Edit profile
             </Link>
           </li>

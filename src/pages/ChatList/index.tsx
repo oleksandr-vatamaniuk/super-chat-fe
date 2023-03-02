@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './chat-list.module.scss'
 import ChatIcon from '../../components/icons/chat-icon/chat-icon'
 import LogoutIcon from '../../components/icons/logout-icon/logout-icon'
@@ -66,7 +66,7 @@ const ChatList = () => {
                       <NavLink
                         className="nav-link text-center text-md-start pe-0 ps-0 pt-0"
                         aria-current="page"
-                        to="/chat-list"
+                        to="/chat"
                       >
                         <span className="pe-2 ps-2 ps-md-0 pe-md-3">
                           <ChatIcon />
@@ -88,9 +88,7 @@ const ChatList = () => {
             </div>
             <div className="col-10 grey-bg p-0">
               <div className={styles['header-offset-top']}>
-                <div className={styles['transition']}>
-                  <Outlet />
-                </div>
+                <Outlet />
               </div>
             </div>
           </div>

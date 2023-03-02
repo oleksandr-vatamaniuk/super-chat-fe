@@ -16,7 +16,7 @@ const Settings = () => {
                 <li>
                   <NavLink
                     className={({ isActive }) => (isActive ? `${styles['active']}` : undefined)}
-                    to="/chat-list/settings/edit-profile"
+                    to="/settings/edit-profile"
                   >
                     Edit Information
                   </NavLink>
@@ -24,7 +24,7 @@ const Settings = () => {
                 <li>
                   <NavLink
                     className={({ isActive }) => (isActive ? `${styles['active']}` : undefined)}
-                    to="/chat-list/settings/change-avatar"
+                    to="/settings/change-avatar"
                   >
                     User Avatar
                   </NavLink>
@@ -32,7 +32,7 @@ const Settings = () => {
                 <li>
                   <NavLink
                     className={({ isActive }) => (isActive ? `${styles['active']}` : undefined)}
-                    to="/chat-list/settings/change-password"
+                    to="/settings/change-password"
                   >
                     Change Password
                   </NavLink>

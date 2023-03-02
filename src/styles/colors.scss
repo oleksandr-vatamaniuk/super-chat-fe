@@ -37,6 +37,10 @@ $dropdown-box-shadow: none;
   color: rgba($DARK_GRAY_100, 0.5);
 }
 
+.dark-gray-color {
+  color: $DARK_GRAY_100;
+}
+
 .grey-bg {
   background-color: $FORM_FILL_GRAY;
 }

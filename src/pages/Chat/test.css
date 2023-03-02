@@ -1,0 +1,13 @@
+.my-node-enter {
+  width: 0;
+}
+.my-node-enter-active {
+  width: 100%;
+  transition: width 1000ms;
+}
+.my-node-exit {
+  width: 100%;
+}
+.my-node-exit-active {
+  width: 0;
+}

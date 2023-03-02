@@ -25,12 +25,13 @@ function App() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password/:resetId" element={<ResetPassword />} />
         <Route path="terms-and-policy" element={<TermsAndPolicy />} />
-        <Route path="chat-list" element={<ChatList />}>
-          <Route index element={<Navigate to="/chat-list/chat" replace />} />
+        <Route element={<ChatList />}>
+          <Route index element={<Navigate to="/chat" replace />} />
           <Route path="chat" element={<Chat />}>
             <Route path={':chatId'} element={<ChatWindow />} />
           </Route>
           <Route path={'settings'} element={<Settings />}>
+            <Route index element={<Navigate to="/settings/edit-profile" replace />} />
             <Route path={'edit-profile'} element={<EditProfile />} />
             <Route path={'change-avatar'} element={<EditAvatar />} />
             <Route path={'change-password'} element={<ChangePassword />} />
