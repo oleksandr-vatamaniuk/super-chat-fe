@@ -8,7 +8,7 @@ interface changePasswordValues {
   confirmNewPassword: string
 }
 
-const ChangePassword = () => {
+const Index = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const submitHandler = (formValues: changePasswordValues) => {
@@ -121,4 +121,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword
+export default Index

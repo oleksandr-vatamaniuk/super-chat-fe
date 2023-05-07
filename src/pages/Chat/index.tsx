@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import ChatItem from '../../components/ChatItem/chatItem'
+import ChatItem from '@components/ChatItem/chatItem'
 import styles from './chat.module.scss'
-import './test.css'
 
 const Chat = () => {
   const { chatId } = useParams()
-  // const nodeRef = useRef(null);
+
   const isMobileRes = () => {
     return window.innerWidth < 700 && !!chatId
   }
@@ -24,7 +23,7 @@ const Chat = () => {
             {!chatId && (
               <div className="mt-4 pe-3 ps-3 pe-md-4 ps-md-4">
                 <div className="d-flex align-items-center justify-content-between">
-                  <h4 className="d-inline-block m-0">Chats</h4>
+                  <h5 className="d-inline-block m-0">Chats</h5>
                   <button className="btn btn-primary btn-small-2">
                     <span className={styles['plus-icon']}>+</span>
                     <span className="d-none d-md-inline ms-md-2">New Chat</span>

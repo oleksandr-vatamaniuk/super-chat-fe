@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import styles from './chat-list.module.scss'
-import ChatIcon from '../../components/icons/chat-icon/chat-icon'
-import LogoutIcon from '../../components/icons/logout-icon/logout-icon'
-import UserProfile from '../../components/userProfile'
+import React from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
+import styles from './main-layout.module.scss'
+import ChatIcon from '@components/icons/chat-icon/chat-icon'
+import LogoutIcon from '@components/icons/logout-icon/logout-icon'
+import UserProfile from '@components/userProfile'
 
-const ChatList = () => {
+const HomeLayout = () => {
   return (
     <>
       <header className={`${styles['header']} bg-white w-100 border-bottom`}>
@@ -98,4 +98,4 @@ const ChatList = () => {
   )
 }
 
-export default ChatList
+export default HomeLayout

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import UserAvatar from '../userAvatar/userAvatar'
 import styles from '../userProfile/user-profile.module.scss'
 import { ReactPortal } from '../utils/portal/portal'

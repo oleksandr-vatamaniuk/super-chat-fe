@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './user-profile.module.scss'
 import { Link } from 'react-router-dom'
-import UserAvatar from '../userAvatar/userAvatar'
+import UserAvatar from '@components/userAvatar/userAvatar'
 
 const UserProfile = () => {
   const [showDropDownMenu, setShowDropDownMenu] = useState<boolean>(false)

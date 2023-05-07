@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import styles from './signup.module.scss'
-import SocialMediaButton from '../../components/buttons/social-media'
+import SocialMediaButton from '@components/buttons/social-media'
 import { Link } from 'react-router-dom'
 
 interface SignUpFormValues {
