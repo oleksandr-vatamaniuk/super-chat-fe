@@ -11,11 +11,13 @@
     "lint-fix": "eslint --fix .",
     "prepare": "husky"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "react": "^18.3.1",
