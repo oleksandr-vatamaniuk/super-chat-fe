@@ -1,43 +1,139 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { AuthLayout, MainLayout } from '@layouts'
+import { ForgotPassword, Login, ResetPassword, SignUp, ThankYou, VerifyEmail } from '@features/auth/pages'
+import { Chat, ChatWindow } from '@features/chat/pages'
+import { ChangeAvatar, ChangePassword, EditProfile, Settings } from '@features/settings/pages'
+import { TermsAndPolicy, Error } from '@pages'
+
+import ChatList from '@features/chat/components/ChatList/ChatList.tsx'
+import { useMediaQuery } from 'react-responsive'
+import { Toaster } from '@components/chakra/toaster.tsx'
+import RequireAuth from '@components/RequireAuth/RequireAuth.tsx'
+import Loading from '@components/Loading/Loading.tsx'
 
 function App() {
-	const [count, setCount] = useState(0)
+	const isMobile = useMediaQuery({
+		query: '(max-width: 768px)',
+	})
 
 	return (
 		<>
-			<div>
-				<a
-					href='https://vite.dev'
-					target='_blank'
-				>
-					<img
-						src={viteLogo}
-						className='logo'
-						alt='Vite logo'
+			<Toaster />
+			<Routes>
+				<Route element={<AuthLayout />}>
+					<Route
+						index
+						element={
+							<Navigate
+								to='/login'
+								replace
+							/>
+						}
 					/>
-				</a>
-				<a
-					href='https://react.dev'
-					target='_blank'
-				>
-					<img
-						src={reactLogo}
-						className='logo react'
-						alt='React logo'
+					<Route
+						path='login'
+						element={<Login />}
 					/>
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
+					<Route
+						path='signup'
+						element={<SignUp />}
+					/>
+					<Route
+						path='forgot-password'
+						element={<ForgotPassword />}
+					/>
+					<Route
+						path='reset-password'
+						element={<ResetPassword />}
+					/>
+					<Route
+						path='verify'
+						element={<VerifyEmail />}
+					/>
+					<Route
+						path='thankYou'
+						element={<ThankYou />}
+					/>
+
+					<Route
+						path='404'
+						element={<Error />}
+					/>
+				</Route>
+
+				<Route element={<RequireAuth />}>
+					<Route element={<MainLayout />}>
+						<Route
+							index
+							element={
+								<Navigate
+									to='/chat'
+									replace
+								/>
+							}
+						/>
+						<Route
+							path='chat'
+							element={isMobile ? <Outlet /> : <Chat />}
+						>
+							{isMobile && (
+								<Route
+									index
+									element={<ChatList />}
+								/>
+							)}
+							<Route
+								path={':chatId'}
+								element={<ChatWindow />}
+							/>
+						</Route>
+						<Route
+							path='settings'
+							element={<Settings />}
+						>
+							<Route
+								index
+								element={
+									<Navigate
+										to='/settings/edit-profile'
+										replace
+									/>
+								}
+							/>
+							<Route
+								path={'edit-profile'}
+								element={<EditProfile />}
+							/>
+							<Route
+								path={'change-avatar'}
+								element={<ChangeAvatar />}
+							/>
+							<Route
+								path={'change-password'}
+								element={<ChangePassword />}
+							/>
+						</Route>
+					</Route>
+				</Route>
+
+				<Route
+					path='privacyPolicy'
+					element={<TermsAndPolicy />}
+				/>
+				<Route
+					path='*'
+					element={
+						<Navigate
+							to='/404'
+							replace
+						/>
+					}
+				/>
+				<Route
+					path='test'
+					element={<Loading />}
+				/>
+			</Routes>
 		</>
 	)
 }

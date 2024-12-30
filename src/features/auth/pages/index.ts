@@ -1,0 +1,6 @@
+export { default as Login } from './Login/Login.tsx'
+export { default as SignUp } from './SignUp/SignUp.tsx'
+export { default as ForgotPassword } from './ForgotPassword/ForgotPassword.tsx'
+export { default as ResetPassword } from './ResetPassword/ResetPassword.tsx'
+export { default as ThankYou } from './ThankYou/ThankYou.tsx'
+export { default as VerifyEmail } from './VerifyEmail/VerifyEmail.tsx'

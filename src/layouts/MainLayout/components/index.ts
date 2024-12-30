@@ -1,0 +1,5 @@
+export { default as Header } from './Header/Header.tsx'
+export { default as Navigation } from './Navigation/Navigation.tsx'
+export { default as MobileNavigation } from './MobileNavigation/MobileNavigation.tsx'
+export { default as Search } from './Search/Search.tsx'
+export { default as UserProfile } from './UserProfile/UserProfile.tsx'
