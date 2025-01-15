@@ -26,7 +26,7 @@ export const userApi = createApi({
 				}
 			},
 		}),
-		findUserById: builder.query({
+		getUserById: builder.query({
 			query(id) {
 				return {
 					url: `/user/${id}`,
@@ -68,12 +68,14 @@ export const userApi = createApi({
 			invalidatesTags: ['User'],
 		}),
 		findUsersByName: builder.mutation({
-			query(body) {
+			query(name) {
 				return {
 					method: 'POST',
 					url: '/user/find-users',
 					credentials: 'include',
-					body,
+					body: {
+						name,
+					},
 				}
 			},
 		}),
@@ -86,5 +88,5 @@ export const {
 	useUpdateAvatarMutation,
 	useUpdateUserPasswordMutation,
 	useFindUsersByNameMutation,
-	useFindUserByIdQuery,
+	useGetUserByIdQuery,
 } = userApi

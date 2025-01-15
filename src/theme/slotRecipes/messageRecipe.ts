@@ -12,7 +12,8 @@ export const messageRecipe = defineSlotRecipe({
 		},
 		bubble: {
 			flexDirection: { base: 'column', lg: 'row' },
-			maxWidth: { base: '75%', xl: '400px' },
+			maxWidth: { xl: '400px' },
+			// maxWidth: { base: '75%', xl: '400px' },
 			minWidth: '120px',
 			borderRadius: '1rem',
 			position: 'relative',
@@ -42,7 +43,6 @@ export const messageRecipe = defineSlotRecipe({
 			alignSelf: 'end',
 			textStyle: 'xs',
 			fontSize: { base: '10px', lg: '12px' },
-			fontWeight: 'medium',
 		},
 		container: {
 			pb: 2,

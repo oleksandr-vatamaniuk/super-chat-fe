@@ -1,10 +1,12 @@
 import { Box, VStack, Heading, Text, Image, HStack, Link, Center, AbsoluteCenter } from '@chakra-ui/react'
-import { Formik } from 'formik'
+import { FormikProvider, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Button } from '@components/chakra/button.tsx'
 import { CheckBoxField, PasswordField, TextField } from '@components'
+import { useRegisterUserMutation } from '@store/auth/authApi.ts'
+import { toaster } from '@components/chakra/toaster.tsx'
 
 interface SignUpFormValues {
 	name: string
@@ -16,18 +18,37 @@ interface SignUpFormValues {
 }
 
 const SignUp = () => {
-	const [isLoading, setLoading] = useState(false)
+	const navigate = useNavigate()
+	const [registerUser, { isLoading, isSuccess }] = useRegisterUserMutation()
 
-	console.log(isLoading)
-
-	const submitHandler = async ({ email, password }: SignUpFormValues) => {
-		// loginUser({ email, password })
-		setLoading(true)
-
-		console.log(email, password)
+	const submitHandler = async ({ email, password, age, name }: SignUpFormValues) => {
+		registerUser({
+			email,
+			password,
+			age,
+			name,
+		})
 	}
 
-	const signUpFormik = {
+	useEffect(() => {
+		if (isSuccess) {
+			toaster.create({
+				title: 'Welcome Aboard!',
+				description: 'You’ve successfully signed up. Please check you email box.',
+				type: 'success',
+			})
+
+			const { name, email } = signUpFormik.values
+
+			const params = new URLSearchParams({ name, email })
+
+			navigate(`/thankYou?${params.toString()}`)
+
+			signUpFormik.resetForm()
+		}
+	}, [isLoading])
+
+	const signUpFormik = useFormik({
 		initialValues: {
 			name: '',
 			age: '',
@@ -49,7 +70,7 @@ const SignUp = () => {
 			terms: Yup.bool().oneOf([true], 'You must accept the terms and conditions'),
 		}),
 		onSubmit: submitHandler,
-	}
+	})
 
 	// TODO number input
 	return (
@@ -78,67 +99,65 @@ const SignUp = () => {
 				>
 					Enter your details to create super account.
 				</Text>
-				<Formik {...signUpFormik}>
-					{({ handleSubmit }) => (
-						<form onSubmit={handleSubmit}>
-							<HStack
-								gap='8'
-								width='full'
-								alignItems='flex-start'
-							>
-								<TextField
-									label='Name'
-									name='name'
-									type='text'
-									placeholder='Enter your name'
-									required
-								/>
-								<TextField
-									label='Age'
-									name='age'
-									type='number'
-									placeholder='Enter your Age'
-								/>
-							</HStack>
+				<FormikProvider value={signUpFormik}>
+					<form onSubmit={signUpFormik.handleSubmit}>
+						<HStack
+							gap='8'
+							width='full'
+							alignItems='flex-start'
+						>
 							<TextField
-								label='Email'
-								name='email'
-								type='email'
-								placeholder='Enter your email adress'
+								label='Name'
+								name='name'
+								type='text'
+								placeholder='Enter your name'
 								required
 							/>
-							<PasswordField
-								label='Password'
-								name='password'
-								placeholder='Enter your password'
-								required
+							<TextField
+								label='Age'
+								name='age'
+								type='number'
+								placeholder='Enter your Age'
 							/>
-							<PasswordField
-								label='Confim Password'
-								name='confirmPassword'
-								placeholder='Enter your new password again'
-								required
-							/>
-							<CheckBoxField
-								type='checkbox'
-								name='terms'
-							>
-								I agree to Product&nbsp;
-								<Link asChild>
-									<NavLink to='/privacyPolicy'>Terms and Policy.</NavLink>
-								</Link>
-							</CheckBoxField>
-							<Button
-								loading={isLoading}
-								w='full'
-								size='lg'
-								type='submit'
-							>
-								Get started now
-							</Button>
-						</form>
-					)}
-				</Formik>
+						</HStack>
+						<TextField
+							label='Email'
+							name='email'
+							type='email'
+							placeholder='Enter your email adress'
+							required
+						/>
+						<PasswordField
+							label='Password'
+							name='password'
+							placeholder='Enter your password'
+							required
+						/>
+						<PasswordField
+							label='Confim Password'
+							name='confirmPassword'
+							placeholder='Enter your new password again'
+							required
+						/>
+						<CheckBoxField
+							type='checkbox'
+							name='terms'
+						>
+							I agree to Product&nbsp;
+							<Link asChild>
+								<NavLink to='/privacyPolicy'>Terms and Policy.</NavLink>
+							</Link>
+						</CheckBoxField>
+						<Button
+							loading={isLoading}
+							w='full'
+							size='lg'
+							type='submit'
+						>
+							Get started now
+						</Button>
+					</form>
+				</FormikProvider>
 				<Box
 					textAlign='center'
 					position='relative'

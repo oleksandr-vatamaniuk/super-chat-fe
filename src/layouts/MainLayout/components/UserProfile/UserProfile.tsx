@@ -1,13 +1,15 @@
-import { Box, Flex, Text, chakra, Link } from '@chakra-ui/react'
+import { Box, Flex, Text, chakra, Link, Float, Circle } from '@chakra-ui/react'
 import { NavLink } from 'react-router-dom'
 import { Avatar } from '@components/chakra/avatar.tsx'
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from '@components/chakra/popover.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { useSelector } from 'react-redux'
-import { selectUser } from '@store/user/userSlice.ts'
+import { selectUser, User } from '@store/user/userSlice.ts'
+import { selectIsUserOnline } from '@store/chat/chatSlice.ts'
 
 const UserProfile = () => {
-	const user = useSelector(selectUser) as any
+	const user = useSelector(selectUser) as User
+	const isUserOnline = useSelector((state) => selectIsUserOnline(state, user?._id!))
 
 	return (
 		<Flex
@@ -21,7 +23,22 @@ const UserProfile = () => {
 					size='xl'
 					name={user.name}
 					src={user.avatar || ''}
-				/>
+				>
+					{isUserOnline && (
+						<Float
+							placement='top-end'
+							offsetX='1'
+							offsetY='1'
+						>
+							<Circle
+								bg='brand.status'
+								size='8px'
+								outline='2px solid'
+								outlineColor='bg'
+							/>
+						</Float>
+					)}
+				</Avatar>
 			</Box>
 			<Box
 				flex={1}

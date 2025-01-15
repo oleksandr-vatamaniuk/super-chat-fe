@@ -1,9 +1,25 @@
-import { Box, Button, Float, Link, Text } from '@chakra-ui/react'
-import { NavLink } from 'react-router-dom'
+import { Box, Float, HStack, Text } from '@chakra-ui/react'
+import { NavLink as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { BiMessageDetail } from 'react-icons/bi'
 import { MdExitToApp } from 'react-icons/md'
+import { useLogOutMutation } from '@store/auth/authApi.ts'
+import { useEffect } from 'react'
+import { Button } from '@components/chakra/button.tsx'
 
 const Navigation = () => {
+	const navigate = useNavigate()
+	const [logOut, { isLoading, isSuccess }] = useLogOutMutation()
+
+	const onLogOutHandler = async () => {
+		await logOut(null)
+	}
+
+	useEffect(() => {
+		if (isSuccess) {
+			navigate('/login')
+		}
+	}, [isLoading])
+
 	return (
 		<>
 			<Box
@@ -22,31 +38,36 @@ const Navigation = () => {
 				p={6}
 				pl={0}
 			>
-				<Link
-					h='full'
-					w='full'
-					pl={6}
-					fontSize='sm'
-					borderRadius={0}
-					color='brand.blue.100'
-					asChild
-					position='relative'
-				>
-					<NavLink to='/chat'>
-						<Float
-							height='full'
-							placement='middle-start'
+				<ReactRouterLink to={'/chat'}>
+					{({ isActive }) => (
+						<Box
+							h='full'
+							w='full'
+							pl={6}
+							position='relative'
 						>
-							<Box
+							<Float
 								height='full'
-								w='1px'
-								bg='brand.blue.100'
-							/>
-						</Float>
-						<BiMessageDetail />
-						Chat
-					</NavLink>
-				</Link>
+								placement='middle-start'
+							>
+								<Box
+									height='full'
+									w={isActive ? '2px' : 0}
+									bg='brand.blue.100'
+								/>
+							</Float>
+							<HStack color={isActive ? 'brand.blue.100' : 'fg.muted'}>
+								<BiMessageDetail />
+								<Text
+									fontWeight={500}
+									fontSize='sm'
+								>
+									Chat
+								</Text>
+							</HStack>
+						</Box>
+					)}
+				</ReactRouterLink>
 			</Box>
 			<Box
 				ml={6}
@@ -56,6 +77,8 @@ const Navigation = () => {
 			/>
 			<Box p={6}>
 				<Button
+					loading={isLoading}
+					onClick={onLogOutHandler}
 					variant='subtle'
 					w='full'
 				>

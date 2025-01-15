@@ -4,12 +4,10 @@ import { ForgotPassword, Login, ResetPassword, SignUp, ThankYou, VerifyEmail } f
 import { Chat, ChatWindow } from '@features/chat/pages'
 import { ChangeAvatar, ChangePassword, EditProfile, Settings } from '@features/settings/pages'
 import { TermsAndPolicy, Error } from '@pages'
-
 import ChatList from '@features/chat/components/ChatList/ChatList.tsx'
 import { useMediaQuery } from 'react-responsive'
 import { Toaster } from '@components/chakra/toaster.tsx'
 import RequireAuth from '@components/RequireAuth/RequireAuth.tsx'
-import Loading from '@components/Loading/Loading.tsx'
 
 function App() {
 	const isMobile = useMediaQuery({
@@ -39,6 +37,10 @@ function App() {
 						element={<SignUp />}
 					/>
 					<Route
+						path='verify'
+						element={<VerifyEmail />}
+					/>
+					<Route
 						path='forgot-password'
 						element={<ForgotPassword />}
 					/>
@@ -47,14 +49,9 @@ function App() {
 						element={<ResetPassword />}
 					/>
 					<Route
-						path='verify'
-						element={<VerifyEmail />}
-					/>
-					<Route
 						path='thankYou'
 						element={<ThankYou />}
 					/>
-
 					<Route
 						path='404'
 						element={<Error />}
@@ -128,10 +125,6 @@ function App() {
 							replace
 						/>
 					}
-				/>
-				<Route
-					path='test'
-					element={<Loading />}
 				/>
 			</Routes>
 		</>

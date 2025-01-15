@@ -1,15 +1,53 @@
 import { Box, Float, Input } from '@chakra-ui/react'
 import { IoIosSend } from 'react-icons/io'
-import { useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 import { Button } from '@components/chakra/button.tsx'
 import { EmojiPopover } from '@features/chat/components'
+import { useSendMessageMutation } from '@store/chat/chatApi.ts'
+import { useParams } from 'react-router-dom'
 
-const MessageInput = () => {
+type MessageInputProps = {
+	disabled: boolean
+}
+
+const MessageInput: FC<MessageInputProps> = ({ disabled = true }) => {
+	const { chatId } = useParams()
+	const inputRef = useRef<HTMLInputElement>(null)
 	const [message, setMessage] = useState('')
+	const [sendMessage, { isLoading, isSuccess }] = useSendMessageMutation()
 
 	const emojiHandler = (emoji: string) => {
-		console.log(emoji)
 		setMessage((prevMessage) => prevMessage + emoji)
+		setTimeout(() => {
+			inputRef.current?.focus()
+		}, 0)
+	}
+
+	useEffect(() => {
+		if (!disabled || !isLoading) {
+			inputRef.current?.focus()
+		}
+	}, [disabled, isLoading, chatId])
+
+	useEffect(() => {
+		if (isSuccess) {
+			setMessage('')
+		}
+	}, [isSuccess, isLoading])
+
+	const submitHandler = async (event: FormEvent) => {
+		event.preventDefault()
+
+		if (!message) return
+
+		await sendMessage({
+			receiverId: chatId,
+			message,
+		})
+	}
+
+	const handleMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setMessage(event.target.value)
 	}
 
 	return (
@@ -19,36 +57,46 @@ const MessageInput = () => {
 			w='full'
 			position='relative'
 		>
-			<Float
-				zIndex={1}
-				offsetX='12'
-				placement='middle-end'
-			>
-				<Button
-					variant='ghost'
-					color='brand.grey.250'
-					size='md'
-					px={3}
-					_hover={{
-						color: 'brand.grey.500',
-					}}
+			<form onSubmit={submitHandler}>
+				<Float
+					zIndex={1}
+					offsetX='12'
+					placement='middle-end'
 				>
-					<IoIosSend />
-				</Button>
-			</Float>
-			<Float
-				zIndex={12}
-				offsetX='12'
-				placement='middle-start'
-			>
-				<EmojiPopover onEmoji={emojiHandler} />
-			</Float>
-			<Input
-				px={12}
-				placeholder='Type Message'
-				value={message}
-				onChange={(event) => setMessage(event.target.value)}
-			/>
+					<Button
+						variant='ghost'
+						color='brand.grey.250'
+						size='md'
+						px={3}
+						disabled={disabled || isLoading}
+						loading={isLoading}
+						onClick={submitHandler}
+						_hover={{
+							color: 'brand.grey.500',
+						}}
+					>
+						{!isLoading && <IoIosSend />}
+					</Button>
+				</Float>
+				<Float
+					zIndex={12}
+					offsetX='12'
+					placement='middle-start'
+				>
+					<EmojiPopover
+						disabled={disabled || isLoading}
+						onEmoji={emojiHandler}
+					/>
+				</Float>
+				<Input
+					disabled={disabled || isLoading}
+					ref={inputRef}
+					px={12}
+					placeholder='Type Message'
+					value={message}
+					onChange={handleMessageChange}
+				/>
+			</form>
 		</Box>
 	)
 }

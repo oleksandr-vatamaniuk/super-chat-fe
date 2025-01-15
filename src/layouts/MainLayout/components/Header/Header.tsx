@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Image, useBreakpointValue, Text, Container } from '@chakra-ui/react'
-import { MobileNavigation, Search, UserProfile } from '@layouts/MainLayout/components'
+import { MobileNavigation, SearchModal, UserProfile } from '@layouts/MainLayout/components'
 import { useState } from 'react'
 
 const Header = () => {
@@ -72,7 +72,7 @@ const Header = () => {
 								gap={{ base: 4, md: 8 }}
 								px={{ base: 4, md: 8 }}
 							>
-								<Search />
+								<SearchModal />
 								<UserProfile />
 							</Flex>
 						</Box>

@@ -17,6 +17,17 @@ const checkboxRecipe = defineSlotRecipe({
 				},
 			},
 		},
+		variant: {
+			subtle: {
+				control: {
+					bg: 'brand.grey.100',
+					borderColor: 'brand.grey.150',
+					'&:is([data-state=checked], [data-state=indeterminate])': {
+						color: 'colorPalette.fg',
+					},
+				},
+			},
+		},
 	},
 	slots: checkboxAnatomy.keys(),
 })

@@ -33,7 +33,9 @@
 			"@layouts": ["./layouts"],
 			"@layouts/*": ["./layouts/*"],
 			"@store/*": ["./store/*"],
-			"@features/*": ["./features/*"]
+			"@features/*": ["./features/*"],
+			"@utils/*": ["./utils/*"],
+			"@hooks/*": ["./hooks/*"]
 		}
 	},
 	"include": ["src"]

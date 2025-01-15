@@ -1,7 +1,21 @@
 import { Center, Heading, Text, Stack, Box, Image } from '@chakra-ui/react'
+import { Navigate } from 'react-router-dom'
+import useGetQueryParams from '@hooks/useGetQueryParams.ts'
 
 const ThankYou = () => {
-	const { email, name } = { email: 'hello@gmail.com', name: 'John Doe' }
+	const queryParams = useGetQueryParams()
+
+	const name = queryParams.get('name')
+	const email = queryParams.get('email')
+
+	if (!name || !email) {
+		return (
+			<Navigate
+				to='/login'
+				replace
+			/>
+		)
+	}
 
 	return (
 		<Center
@@ -30,7 +44,7 @@ const ThankYou = () => {
 				</Heading>
 				<Text textStyle={{ base: 'sm', md: 'md' }}>
 					Please check your email <strong>{email}</strong> and click on the confirmation link to complete your sign up.
-					Check your spam folder as well if you cant find it in your inbox.
+					Check your spam folder as well if you can’t find it in your inbox.
 				</Text>
 			</Stack>
 		</Center>

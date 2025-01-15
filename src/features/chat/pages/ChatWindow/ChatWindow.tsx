@@ -1,7 +1,69 @@
-import { Box, Stack } from '@chakra-ui/react'
-import { ChatHeader, Message, MessageInput } from '@features/chat/components'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { Stack } from '@chakra-ui/react'
+import { ChatHeader, MessageList, MessageInput } from '@features/chat/components'
+import useGetChatParticipant from '@features/chat/hooks/useGetChatParticipant.ts'
+import { useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@store/chat/chatApi.ts'
+import { setCurrentParticipant } from '@store/chat/chatSlice.ts'
+import WebSocket from '@store/websocket.ts'
 
 const ChatWindow = () => {
+	const { chatId } = useParams()
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
+	const {
+		data: participant,
+		isError: isErrorParticipant,
+		isSuccess: isSuccessParticipant,
+		isLoading: isLoadingParticipant,
+	} = useGetChatParticipant(chatId!)
+
+	const { data: messages = [], isLoading: isMessagesLoading } = useGetMessagesQuery(chatId, {
+		skip: !isSuccessParticipant,
+	})
+
+	const [markAsReadMessages] = useMarkAsReadMessagesMutation()
+
+	const isLoading = isMessagesLoading || isLoadingParticipant
+
+	useEffect(() => {
+		if (isErrorParticipant) {
+			navigate('/chat')
+		}
+	}, [isErrorParticipant])
+
+	useEffect(() => {
+		if (isSuccessParticipant) {
+			dispatch(setCurrentParticipant(participant))
+		}
+		return () => {
+			dispatch(setCurrentParticipant({}))
+		}
+	}, [isSuccessParticipant, participant, dispatch])
+
+	useEffect(() => {
+		const socket = WebSocket.getInstance()
+		if (socket) {
+			socket.on('deleteChat', ({ participant }) => {
+				if (participant._id === chatId) {
+					navigate('/chat')
+				}
+			})
+		}
+	}, [])
+
+	useEffect(() => {
+		if (chatId && messages) {
+			const unreadByUser = messages.filter((message: any) => message.receiverId !== chatId && !message.readByReceiver)
+
+			if (unreadByUser.length !== 0) {
+				markAsReadMessages({ chatId })
+			}
+		}
+	}, [messages, chatId])
+
 	return (
 		<Stack
 			w='full'
@@ -12,48 +74,16 @@ const ChatWindow = () => {
 			bg='brand.grey.100'
 			gap={0}
 		>
-			<ChatHeader />
-			<Box
-				flexGrow={1}
-				flexShrink={1}
-				flexBasis={0}
-				overflowY='scroll'
-			>
-				<Box
-					px={{ base: 4, md: 8 }}
-					py={2}
-				>
-					<Message
-						variant='sender'
-						text='Hello Nora, thank you for calling Provide Support. How may I help you?'
-					/>
-					<Message
-						variant='receiver'
-						text="Please hold for one moment, I'll check with my manager."
-					/>
-					<Message
-						variant='sender'
-						text="I'm sorry, I don't have the answer to that question. May I put you on hold for a few minutes while I check with my manager?"
-					/>
-					<Message
-						variant='receiver'
-						text="Please hold for one moment, I'll check with my manager."
-					/>
-					<Message
-						variant='receiver'
-						text="Please hold for one moment, I'll check with my manager."
-					/>
-					<Message
-						variant='sender'
-						text='Hello Wolrd'
-					/>
-					<Message
-						variant='receiver'
-						text='Hello Wolrd 200'
-					/>
-				</Box>
-			</Box>
-			<MessageInput />
+			<ChatHeader
+				disabled={isLoading}
+				participant={participant}
+			/>
+			<MessageList
+				messages={messages}
+				participant={participant}
+				loading={isLoading}
+			/>
+			<MessageInput disabled={isLoading} />
 		</Stack>
 	)
 }

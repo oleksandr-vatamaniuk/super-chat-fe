@@ -4,6 +4,7 @@ import { selectAccessToken } from '@store/auth/authSlice'
 import { useGetCurrentUserQuery } from '@store/user/userApi'
 import { selectUser } from '@store/user/userSlice'
 import { Loading } from '@components'
+import { useWebsocketConnectQuery } from '@store/chat/chatApi.ts'
 
 const RequireAuth = () => {
 	const token = useSelector(selectAccessToken)
@@ -12,6 +13,10 @@ const RequireAuth = () => {
 	const { isLoading, isError } = useGetCurrentUserQuery(null, {
 		skip: !token,
 		refetchOnMountOrArgChange: true,
+	})
+
+	useWebsocketConnectQuery(undefined, {
+		skip: !token && !user,
 	})
 
 	// Redirect to login if no token or if there's an error

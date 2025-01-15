@@ -1,10 +1,12 @@
-import { Center, Heading, Text, Stack, Link, Button } from '@chakra-ui/react'
-import { Formik } from 'formik'
+import { Center, Heading, Text, Stack, Link } from '@chakra-ui/react'
+import { FormikProvider, useFormik } from 'formik'
 import * as Yup from 'yup'
-
-import { useState } from 'react'
 import { Link as ReactRouterLink } from 'react-router'
 import { PasswordField } from '@components'
+import { useResetPasswordMutation } from '@store/auth/authApi.ts'
+import { Navigate } from 'react-router-dom'
+import { Button } from '@components/chakra/button.tsx'
+import useGetQueryParams from '@hooks/useGetQueryParams.ts'
 
 interface PasswordRecoveryFormValues {
 	password: string
@@ -12,12 +14,31 @@ interface PasswordRecoveryFormValues {
 }
 
 const ResetPassword = () => {
-	const [isSuccess] = useState(false)
-	const submitHandler = async ({ password }: PasswordRecoveryFormValues) => {
-		console.log(password)
+	const queryParams = useGetQueryParams()
+	const [forgotPassword, { isLoading, isSuccess }] = useResetPasswordMutation()
+
+	const token = queryParams.get('token')
+	const email = queryParams.get('email')
+
+	if (!token || !email) {
+		return (
+			<Navigate
+				to='/login'
+				replace
+			/>
+		)
 	}
 
-	const resetPasswordFormik = {
+	const submitHandler = ({ password, confirmPassword }: PasswordRecoveryFormValues) => {
+		forgotPassword({
+			email,
+			token,
+			password,
+			confirmPassword,
+		})
+	}
+
+	const resetPasswordFormik = useFormik({
 		initialValues: {
 			password: '',
 			confirmPassword: '',
@@ -28,10 +49,10 @@ const ResetPassword = () => {
 				.min(8, 'Password is too short - should be 8 chars minimum'),
 			confirmPassword: Yup.string()
 				.required('Confirm password is required')
-				.oneOf([Yup.ref('newPassword')], 'Passwords must match'),
+				.oneOf([Yup.ref('password')], 'Passwords must match'),
 		}),
 		onSubmit: submitHandler,
-	}
+	})
 
 	return (
 		<Center
@@ -75,30 +96,29 @@ const ResetPassword = () => {
 						>
 							Enter and confirm your new password to reset.
 						</Text>
-						<Formik {...resetPasswordFormik}>
-							{({ handleSubmit }) => (
-								<form onSubmit={handleSubmit}>
-									<PasswordField
-										label='Password'
-										name='password'
-										placeholder='Enter your password'
-									/>
-									<PasswordField
-										label='Confim Password'
-										name='confirmPassword'
-										placeholder='Enter your new password again'
-									/>
-									<Button
-										mt={2}
-										w='full'
-										size='lg'
-										type='submit'
-									>
-										Reset
-									</Button>
-								</form>
-							)}
-						</Formik>
+						<FormikProvider value={resetPasswordFormik}>
+							<form onSubmit={resetPasswordFormik.handleSubmit}>
+								<PasswordField
+									label='Password'
+									name='password'
+									placeholder='Enter your password'
+								/>
+								<PasswordField
+									label='Confim Password'
+									name='confirmPassword'
+									placeholder='Enter your new password again'
+								/>
+								<Button
+									mt={2}
+									w='full'
+									size='lg'
+									type='submit'
+									loading={isLoading}
+								>
+									Reset
+								</Button>
+							</form>
+						</FormikProvider>
 					</>
 				)}
 			</Stack>

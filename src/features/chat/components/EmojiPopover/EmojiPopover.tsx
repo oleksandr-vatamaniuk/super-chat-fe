@@ -4,7 +4,7 @@ import { CiFaceSmile } from 'react-icons/ci'
 import { PopoverContent, PopoverRoot, PopoverTrigger } from '@components/chakra/popover.tsx'
 import { Button } from '@components/chakra/button.tsx'
 
-const EmojiPopover: FC<{ onEmoji: (emoji: string) => void }> = ({ onEmoji }) => {
+const EmojiPopover: FC<{ onEmoji: (emoji: string) => void; disabled: boolean }> = ({ onEmoji, disabled }) => {
 	const [open, setOpen] = useState(false)
 
 	const onEmojiHandler = (e: any) => {
@@ -22,6 +22,7 @@ const EmojiPopover: FC<{ onEmoji: (emoji: string) => void }> = ({ onEmoji }) => 
 					color='brand.grey.250'
 					size='md'
 					px={3}
+					disabled={disabled}
 					variant='ghost'
 					_hover={{
 						color: 'brand.grey.500',

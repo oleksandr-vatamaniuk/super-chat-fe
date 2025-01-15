@@ -1,1 +1,1 @@
-export { default as ConfirmEmailModal } from './ConfirmEmailModal/ConfirmEmailModal.tsx'
+export { default as ResendVerificationCodeModal } from './ResendVerificationCodeModal/ResendVerificationCodeModal.tsx'

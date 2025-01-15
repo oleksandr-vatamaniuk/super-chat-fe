@@ -4,31 +4,38 @@ import { Text, useSlotRecipe, Box, RecipeVariantProps, Stack, Flex } from '@chak
 import { FC } from 'react'
 import { messageRecipe } from '@theme/slotRecipes'
 import { Avatar } from '@components/chakra/avatar.tsx'
+import { extractTime } from '@utils/exactTime.ts'
 
 type MessageVariantProps = RecipeVariantProps<typeof messageRecipe>
 
 type MessageProps = MessageVariantProps & {
 	text: string
+	time: string
+	name: string
+	avatar: string
+	showName?: boolean
+	showAvatar?: boolean
 }
 
-const Message: FC<MessageProps> = ({ text, variant }) => {
+const Message: FC<MessageProps> = ({ name, time, text, avatar, variant, showName = true, showAvatar = true }) => {
 	const recipe = useSlotRecipe({ key: 'message' })
 	const styles = recipe({ variant })
 
 	return (
 		<Box css={styles.root}>
 			<Stack css={styles.container}>
-				<Text css={styles.label}>You</Text>
+				{showName && <Text css={styles.label}>{name}</Text>}
 				<Flex css={styles.bubble}>
 					<Text css={styles.bubbleText}>{text}</Text>
-					<Text css={styles.time}>19:56</Text>
+					<Text css={styles.time}>{extractTime(time)}</Text>
 				</Flex>
 			</Stack>
 			<Avatar
 				colorPalette='blue'
 				size='md'
-				name='Oleksandr Vatamaniuk'
-				src={''}
+				name={name}
+				src={avatar}
+				visibility={showAvatar ? 'visible' : 'hidden'}
 			/>
 		</Box>
 	)

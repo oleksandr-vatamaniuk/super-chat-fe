@@ -17,16 +17,32 @@ import { FC } from 'react'
 import { NavLink as ReactRouterLink } from 'react-router-dom'
 import { chatItemRecipe } from '@theme/slotRecipes'
 import { Avatar } from '@components/chakra/avatar.tsx'
+import { extractTime } from '@utils/exactTime.ts'
 
 type ChatItemVariantProps = RecipeVariantProps<typeof chatItemRecipe>
 
-type ChatItemProps = ChatItemVariantProps & {
+type Participant = {
+	_id: string
+	avatar: string
 	name: string
-	chatId: string
-	text: string
 }
 
-const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
+type ChatItemProps = ChatItemVariantProps & {
+	isOnline: boolean
+	unreadMessagesCount: number
+	messageTime: string
+	messageText: string
+	participant: Participant
+}
+
+const ChatItem: FC<ChatItemProps> = ({
+	isOnline,
+	messageText,
+	size,
+	unreadMessagesCount,
+	messageTime,
+	participant: { name, avatar, _id: participantId },
+}) => {
 	const recipe = useSlotRecipe({ key: 'chatItem' })
 	const styles = recipe({ size })
 
@@ -36,7 +52,7 @@ const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
 			w='full'
 			display='inline-block'
 		>
-			<ReactRouterLink to={`/chat/${chatId}`}>
+			<ReactRouterLink to={`/chat/${participantId}`}>
 				{({ isActive }) => (
 					<SimpleGrid
 						templateColumns='repeat(18, 1fr)'
@@ -53,20 +69,22 @@ const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
 									colorPalette='blue'
 									size='md'
 									name={name}
-									src={''}
+									src={avatar}
 								>
-									<Float
-										placement='top-end'
-										offsetX='1'
-										offsetY='1'
-									>
-										<Circle
-											bg='brand.status'
-											size='8px'
-											outline='2px solid'
-											outlineColor='bg'
-										/>
-									</Float>
+									{isOnline && (
+										<Float
+											placement='top-end'
+											offsetX='1'
+											offsetY='1'
+										>
+											<Circle
+												bg='brand.status'
+												size='8px'
+												outline='2px solid'
+												outlineColor='bg'
+											/>
+										</Float>
+									)}
 								</Avatar>
 								<Stack
 									gap={0}
@@ -89,9 +107,9 @@ const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
 											overflow='hidden'
 											lineBreak='anywhere'
 										>
-											{text}
+											{messageText}
 										</Text>
-										{size === 'full' && chatId !== '789' && (
+										{size === 'full' && unreadMessagesCount !== 0 && (
 											<Circle
 												ml={1}
 												fontSize='xs'
@@ -99,10 +117,9 @@ const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
 												bg='brand.status'
 												color='white'
 											>
-												3
+												{unreadMessagesCount}
 											</Circle>
 										)}
-										{/*{size === 'full' && chatId !== '789' && <Box css={styles.messageCount}>3</Box>}*/}
 									</Flex>
 								</Stack>
 							</HStack>
@@ -115,16 +132,16 @@ const ChatItem: FC<ChatItemProps> = ({ name, chatId, text, size }) => {
 									fontSize='sm'
 									color='brand.grey.450'
 								>
-									21/04/2021
+									{extractTime(messageTime)}
 								</Box>
-								{size === 'small' && chatId !== '789' && (
+								{size === 'small' && unreadMessagesCount !== 0 && (
 									<Circle
 										fontSize='xs'
 										size='5'
 										bg='brand.status'
 										color='white'
 									>
-										3
+										{unreadMessagesCount}
 									</Circle>
 								)}
 								<Text css={styles.fakeLink}>Message</Text>

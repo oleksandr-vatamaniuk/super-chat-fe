@@ -1,7 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '@store/store'
 
-const initialState = {
+export type User = {
+	_id?: string
+	name: string
+	avatar: string
+}
+
+type UserState = {
+	user: User | null
+}
+
+const initialState: UserState = {
 	user: null,
 }
 
@@ -11,7 +21,6 @@ const userSlice = createSlice({
 	reducers: {
 		setUser: (state, action) => {
 			state.user = action.payload
-			localStorage.setItem('userId', action.payload.id)
 		},
 	},
 })
@@ -20,4 +29,4 @@ export default userSlice.reducer
 
 export const { setUser } = userSlice.actions
 
-export const selectUser = (state: RootState) => state.user.user
+export const selectUser = (state: RootState) => state.user.user!
