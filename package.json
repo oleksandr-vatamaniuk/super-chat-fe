@@ -7,6 +7,7 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"test": "vitest",
+		"test:e2e": "playwright test",
 		"coverage": "vitest run --coverage",
 		"lint": "eslint .",
 		"preview": "vite preview",
@@ -43,6 +44,7 @@
 	"devDependencies": {
 		"@chakra-ui/cli": "^3.1.2",
 		"@eslint/js": "^9.13.0",
+		"@playwright/test": "^1.49.1",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.1.0",
