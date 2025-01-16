@@ -5,6 +5,7 @@ const Loading = () => {
 		<Box
 			bg='white'
 			w='full'
+			role='region' // Add role for accessibility
 		>
 			<Center h='100vh'>
 				<Box
@@ -12,6 +13,7 @@ const Loading = () => {
 					_open={{
 						animation: 'pulse 1.25s linear infinite;',
 					}}
+					data-testid='loading-box' // Add test ID for easy querying
 				>
 					<Image
 						src='/images/logo-min.svg'
