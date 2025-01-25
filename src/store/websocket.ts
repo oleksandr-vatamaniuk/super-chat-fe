@@ -7,7 +7,7 @@ class WebSocket {
 
 	public static getInstance(): Socket {
 		if (!WebSocket.instance) {
-			WebSocket.instance = io('http://localhost:8000', {
+			WebSocket.instance = io(import.meta.env.VITE_SERVER_ENDPOINT, {
 				reconnectionDelay: 1000,
 				reconnection: true,
 				reconnectionAttempts: 5,

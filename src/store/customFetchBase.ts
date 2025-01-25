@@ -3,9 +3,7 @@ import { Mutex } from 'async-mutex'
 import { logOut, setCredentials } from '@store/auth/authSlice.ts'
 import { RootState } from '@store/store.ts'
 
-// const baseUrl = `${import.meta.env.VITE_SERVER_ENDPOINT}/api/v1`;
-
-const baseUrl = `http://localhost:8000/api/v1`
+const baseUrl = `${import.meta.env.VITE_SERVER_ENDPOINT}/api/v1`
 
 // Create a new mutex
 const mutex = new Mutex()
