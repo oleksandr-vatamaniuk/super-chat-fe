@@ -1,0 +1,37 @@
+name: CI/CD Pipeline - Build, Publish, and Deploy
+on:
+  push:
+    branches: ['master']
+
+env:
+  IMAGE_NAME: oleksandrvatamaniuk/super-chat-react
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login -u oleksandrvatamaniuk --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Push Docker Image to Docker Hub
+        run: docker push $IMAGE_NAME
+  deploy:
+    name: Deploy
+    needs: [build-and-publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }} # Can be found as part of the Deploy Hook
+          api-key: ${{ secrets.RENDER_API_KEY }} # Create your API key in Render Dashboard > Account Settings
+
