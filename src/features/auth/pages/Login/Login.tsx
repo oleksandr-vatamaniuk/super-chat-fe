@@ -53,7 +53,7 @@ const Login = () => {
 		onError: async (error: any) => {
 			console.log(error)
 		},
-		ux_mode: 'redirect',
+		ux_mode: 'popup',
 		flow: 'auth-code',
 	})
 
