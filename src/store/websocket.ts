@@ -7,7 +7,7 @@ class WebSocket {
 
 	public static getInstance(): Socket {
 		if (!WebSocket.instance) {
-			WebSocket.instance = io(import.meta.env.VITE_SERVER_ENDPOINT, {
+			WebSocket.instance = io('https://super-chat-node.onrender.com', {
 				reconnectionDelay: 1000,
 				reconnection: true,
 				reconnectionAttempts: 5,

@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
 		<ReduxProvider store={store}>
 			<Provider forcedTheme='light'>
 				<BrowserRouter>
-					<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+					<GoogleOAuthProvider clientId='548283053939-ffeao4tvireer7grb8497ru1sj7om3ma.apps.googleusercontent.com'>
 						<App />
 					</GoogleOAuthProvider>
 				</BrowserRouter>
