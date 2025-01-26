@@ -6,10 +6,10 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
 	plugins: [react(), tsconfigPaths()],
 	server: {
-		port: 8080,
+		port: 3000,
 		strictPort: true,
 		host: true,
-		origin: 'http://0.0.0.0:8080',
+		origin: 'http://0.0.0.0:3000',
 	},
 	test: {
 		globals: true,

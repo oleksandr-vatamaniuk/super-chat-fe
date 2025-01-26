@@ -4,11 +4,12 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { Button } from '@components/chakra/button.tsx'
 import { PasswordField, TextField } from '@components'
-import { useLoginMutation } from '@store/auth/authApi.ts'
+import { useLoginMutation, useLoginWithGoogleMutation } from '@store/auth/authApi.ts'
 import { useEffect, useState } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
 import { useNavigate } from 'react-router-dom'
 import { ResendVerificationCodeModal } from '@features/auth/components'
+import { useGoogleLogin } from '@react-oauth/google'
 
 interface SignInFormValues {
 	email: string
@@ -17,6 +18,8 @@ interface SignInFormValues {
 
 const Login = () => {
 	const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation()
+	const [loginWithGoogle, { isLoading: loginWithGoogleLoading, isSuccess: isSuccessLoginWithGoogle }] =
+		useLoginWithGoogleMutation()
 	const navigate = useNavigate()
 	const [openResendEmailModal, setOpenResendEmailModal] = useState(false)
 
@@ -36,6 +39,23 @@ const Login = () => {
 			}
 		}
 	}, [isLoading])
+
+	useEffect(() => {
+		if (isSuccessLoginWithGoogle) {
+			navigate('/chat')
+		}
+	}, [loginWithGoogleLoading])
+
+	const googleLogin = useGoogleLogin({
+		onSuccess: async (res: any) => {
+			loginWithGoogle(res.code)
+		},
+		onError: async (error: any) => {
+			console.log(error)
+		},
+		ux_mode: 'popup',
+		flow: 'auth-code',
+	})
 
 	// @ts-ignore
 	const submitHandler = async ({ email, password }: SignInFormValues) => {
@@ -155,6 +175,7 @@ const Login = () => {
 						<Button
 							size='lg'
 							variant='surface'
+							onClick={() => googleLogin()}
 						>
 							<Image
 								src='/images/google.png'

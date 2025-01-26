@@ -27,6 +27,25 @@ export const authApi = createApi({
 				}
 			},
 		}),
+		loginWithGoogle: builder.mutation({
+			query(token) {
+				return {
+					url: '/auth/google',
+					method: 'POST',
+					body: {
+						token,
+					},
+				}
+			},
+			async onQueryStarted(_args, { dispatch, queryFulfilled }) {
+				try {
+					const { data } = await queryFulfilled
+					dispatch(setCredentials(data))
+				} catch (error) {
+					console.error(error)
+				}
+			},
+		}),
 		logOut: builder.mutation({
 			query() {
 				return {
@@ -106,4 +125,5 @@ export const {
 	useResetPasswordMutation,
 	useVerifyUserMutation,
 	useResendVerificationEmailMutation,
+	useLoginWithGoogleMutation,
 } = authApi

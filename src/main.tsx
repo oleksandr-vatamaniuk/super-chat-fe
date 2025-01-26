@@ -11,13 +11,16 @@ import { Provider } from '@components/chakra/provider.tsx'
 import { Provider as ReduxProvider } from 'react-redux'
 import App from './App.tsx'
 import store from '@store/store.ts'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<ReduxProvider store={store}>
 			<Provider forcedTheme='light'>
 				<BrowserRouter>
-					<App />
+					<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+						<App />
+					</GoogleOAuthProvider>
 				</BrowserRouter>
 			</Provider>
 		</ReduxProvider>
