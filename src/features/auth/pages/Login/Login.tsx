@@ -7,7 +7,7 @@ import { PasswordField, TextField } from '@components'
 import { useLoginMutation, useLoginWithGoogleMutation } from '@store/auth/authApi.ts'
 import { useEffect, useState } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ResendVerificationCodeModal } from '@features/auth/components'
 import { useGoogleLogin } from '@react-oauth/google'
 
@@ -22,6 +22,17 @@ const Login = () => {
 		useLoginWithGoogleMutation()
 	const navigate = useNavigate()
 	const [openResendEmailModal, setOpenResendEmailModal] = useState(false)
+	const [queryParams, setQueryParams] = useSearchParams()
+
+	useEffect(() => {
+		const code = queryParams.get('code')
+
+		if (code) {
+			loginWithGoogle(code)
+			queryParams.delete('code')
+			setQueryParams('')
+		}
+	}, [])
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -47,13 +58,9 @@ const Login = () => {
 	}, [loginWithGoogleLoading])
 
 	const googleLogin = useGoogleLogin({
-		onSuccess: async (res: any) => {
-			loginWithGoogle(res.code)
-		},
-		onError: async (error: any) => {
-			console.log(error)
-		},
-		ux_mode: 'popup',
+		flow: 'auth-code',
+		ux_mode: 'redirect',
+		redirect_uri: import.meta.env.PROD ? 'https://super-chat-react.onrender.com/login' : 'http://localhost:3000/login',
 	})
 
 	// @ts-ignore
@@ -131,7 +138,7 @@ const Login = () => {
 								<ReactRouterLink to='/forgot-password'>Forgot your password?</ReactRouterLink>
 							</Link>
 							<Button
-								loading={isLoading}
+								loading={isLoading || loginWithGoogleLoading}
 								w='full'
 								size='lg'
 								type='submit'

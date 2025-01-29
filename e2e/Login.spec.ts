@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Login Page', () => {
 	test.beforeEach(async ({ page }) => {
-		await page.goto('http://localhost:3001/login') // Replace with your app's URL
+		await page.goto('http://localhost:3000/login') // Replace with your app's URL
 	})
 
 	test('Login page - Sign in with valid credentials', async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe('Login Page', () => {
 		await expect(page).toHaveURL(/forgot-password/)
 
 		// Navigate back to login
-		await page.goto('http://localhost:3001/login') // Replace with your app's URL
+		await page.goto('/login') // Replace with your app's URL
 
 		// Check the 'Sign Up' link
 		const signUpLink = page.locator('a:has-text("Sign Up")')

@@ -3,11 +3,13 @@ import { io, Socket } from 'socket.io-client'
 class WebSocket {
 	private static instance: Socket | null = null
 
+	private static baseUrl = import.meta.env.PROD ? 'https://super-chat-node.onrender.com' : 'http://localhost:8000'
+
 	private constructor() {}
 
 	public static getInstance(): Socket {
 		if (!WebSocket.instance) {
-			WebSocket.instance = io('https://super-chat-node.onrender.com', {
+			WebSocket.instance = io(this.baseUrl, {
 				reconnectionDelay: 1000,
 				reconnection: true,
 				reconnectionAttempts: 5,
