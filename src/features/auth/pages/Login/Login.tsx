@@ -4,12 +4,14 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { Button } from '@components/chakra/button.tsx'
 import { PasswordField, TextField } from '@components'
-import { useLoginMutation, useLoginWithGoogleMutation } from '@store/auth/authApi.ts'
+import { useLoginMutation } from '@store/auth/authApi.ts'
 import { useEffect, useState } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ResendVerificationCodeModal } from '@features/auth/components'
 import { useGoogleLogin } from '@react-oauth/google'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '@store/auth/authSlice.ts'
 
 interface SignInFormValues {
 	email: string
@@ -18,19 +20,23 @@ interface SignInFormValues {
 
 const Login = () => {
 	const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation()
-	const [loginWithGoogle, { isLoading: loginWithGoogleLoading, isSuccess: isSuccessLoginWithGoogle }] =
-		useLoginWithGoogleMutation()
 	const navigate = useNavigate()
 	const [openResendEmailModal, setOpenResendEmailModal] = useState(false)
 	const [queryParams, setQueryParams] = useSearchParams()
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		const code = queryParams.get('code')
+		const token = queryParams.get('token')
 
-		if (code) {
-			loginWithGoogle(code)
-			queryParams.delete('code')
+		if (token) {
+			queryParams.delete('token')
 			setQueryParams('')
+			dispatch(setCredentials({ accessToken: token }))
+			toaster.create({
+				title: 'You successfully logged in',
+				type: 'success',
+			})
+			navigate('/chat')
 		}
 	}, [])
 
@@ -51,15 +57,12 @@ const Login = () => {
 		}
 	}, [isLoading])
 
-	useEffect(() => {
-		if (isSuccessLoginWithGoogle) {
-			navigate('/chat')
-		}
-	}, [loginWithGoogleLoading])
-
 	const googleLogin = useGoogleLogin({
+		flow: 'auth-code',
 		ux_mode: 'redirect',
-		redirect_uri: import.meta.env.PROD ? 'https://super-chat-react.onrender.com/login' : 'http://localhost:3000/login',
+		redirect_uri: import.meta.env.PROD
+			? 'https://super-chat-react.onrender.com/login'
+			: 'http://localhost:8000/api/v1/auth/google',
 	})
 
 	// @ts-ignore
@@ -137,7 +140,7 @@ const Login = () => {
 								<ReactRouterLink to='/forgot-password'>Forgot your password?</ReactRouterLink>
 							</Link>
 							<Button
-								loading={isLoading || loginWithGoogleLoading}
+								loading={isLoading}
 								w='full'
 								size='lg'
 								type='submit'
