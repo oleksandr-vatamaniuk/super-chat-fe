@@ -62,7 +62,7 @@ const Login = () => {
 		flow: 'auth-code',
 		ux_mode: 'redirect',
 		redirect_uri: import.meta.env.PROD
-			? 'https://super-chat-react.onrender.com/api/v1/auth/google'
+			? 'https://super-chat-node.onrender.com/api/v1/auth/google'
 			: 'http://localhost:8000/api/v1/auth/google',
 	})
 
