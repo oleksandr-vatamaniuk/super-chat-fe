@@ -26,6 +26,7 @@ const Login = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
+		console.log(import.meta.env.PROD)
 		const token = queryParams.get('token')
 
 		if (token) {
@@ -61,7 +62,7 @@ const Login = () => {
 		flow: 'auth-code',
 		ux_mode: 'redirect',
 		redirect_uri: import.meta.env.PROD
-			? 'https://super-chat-react.onrender.com/login'
+			? 'https://super-chat-react.onrender.com/api/v1/auth/google'
 			: 'http://localhost:8000/api/v1/auth/google',
 	})
 
