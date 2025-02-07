@@ -46,8 +46,8 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
 					result = await baseQuery(args, api, extraOptions)
 				} else {
 					localStorage.removeItem('accessToken')
-					api.dispatch(logOut)
 					document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+					api.dispatch(logOut)
 					window.location.href = '/login'
 				}
 			} finally {
