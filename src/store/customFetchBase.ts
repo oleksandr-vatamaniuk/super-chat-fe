@@ -46,6 +46,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
 					result = await baseQuery(args, api, extraOptions)
 				} else {
 					api.dispatch(logOut)
+					document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
 					window.location.href = '/login'
 				}
 			} finally {

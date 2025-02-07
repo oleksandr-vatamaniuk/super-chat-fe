@@ -1,9 +1,12 @@
 import { Box, Center, Flex, Image, useBreakpointValue, Text, Container } from '@chakra-ui/react'
 import { MobileNavigation, SearchModal, UserProfile } from '@layouts/MainLayout/components'
-import { useState } from 'react'
+import useIsOffline from '@hooks/useIsOffline.ts'
+import { useWebsocketConnectQuery } from '@store/chat/chatApi.ts'
 
 const Header = () => {
-	const [offline] = useState(false)
+	const isOffline = useIsOffline()
+
+	useWebsocketConnectQuery(undefined, { skip: isOffline })
 
 	const logoSrc = useBreakpointValue({
 		base: '/images/logo-min.svg', // For small screens (default)
@@ -12,7 +15,7 @@ const Header = () => {
 
 	return (
 		<>
-			{offline && (
+			{isOffline && (
 				<Box
 					bg='brand.grey.250'
 					color='white'

@@ -20,6 +20,7 @@ export default defineConfig({
 			injectManifest: {
 				swSrc: 'dist/sw.js',
 			},
+			includeAssets: ['fonts/*.woff', 'fonts/*.woff2', 'images/*.png', 'images/*.jpg'],
 			manifest: {
 				name: 'Super Chat App',
 				short_name: 'Super Chat',
@@ -56,6 +57,9 @@ export default defineConfig({
 			},
 		}),
 	],
+	build: {
+		sourcemap: true,
+	},
 	server: {
 		port: 3000,
 		strictPort: true,

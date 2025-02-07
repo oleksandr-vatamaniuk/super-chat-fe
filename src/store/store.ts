@@ -8,7 +8,7 @@ import { chatApi } from '@store/chat/chatApi.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 
 export const rtkQueryErrorLogger: Middleware = (_) => (next) => (action) => {
-	if (isRejectedWithValue(action)) {
+	if (isRejectedWithValue(action) && navigator.onLine) {
 		console.error('RTK Query Error:', action)
 		const status = (action.payload as { status: number }).status
 		const errorMessage = (action.payload as { data: { message: string } }).data.message

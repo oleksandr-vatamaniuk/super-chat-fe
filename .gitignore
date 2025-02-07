@@ -32,3 +32,5 @@ dist-ssr
 /coverage
 /test-results
 /tests-examples
+/dev-dist
+/vite.config.ts.timestamp*

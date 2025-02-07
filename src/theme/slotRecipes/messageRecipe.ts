@@ -4,6 +4,7 @@ export const messageRecipe = defineSlotRecipe({
 	slots: ['root', 'container', 'bubble', 'bubbleText', 'label', 'time'],
 	base: {
 		root: {
+			transition: 'background-color 1s ease-out',
 			w: 'full',
 			mb: 2,
 			gap: 2,

@@ -5,6 +5,8 @@ import { Button } from '@components/chakra/button.tsx'
 import { EmojiPopover } from '@features/chat/components'
 import { useSendMessageMutation } from '@store/chat/chatApi.ts'
 import { useParams } from 'react-router-dom'
+import useIsOffline from '@hooks/useIsOffline.ts'
+import { toaster } from '@components/chakra/toaster.tsx'
 
 type MessageInputProps = {
 	disabled: boolean
@@ -14,7 +16,8 @@ const MessageInput: FC<MessageInputProps> = ({ disabled = true }) => {
 	const { chatId } = useParams()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [message, setMessage] = useState('')
-	const [sendMessage, { isLoading, isSuccess }] = useSendMessageMutation()
+	const [sendMessage, { isLoading, isSuccess, isError }] = useSendMessageMutation()
+	const isOffline = useIsOffline()
 
 	const emojiHandler = (emoji: string) => {
 		setMessage((prevMessage) => prevMessage + emoji)
@@ -33,7 +36,18 @@ const MessageInput: FC<MessageInputProps> = ({ disabled = true }) => {
 		if (isSuccess) {
 			setMessage('')
 		}
-	}, [isSuccess, isLoading])
+	}, [isSuccess])
+
+	useEffect(() => {
+		if (isOffline && isError) {
+			toaster.create({
+				type: 'success',
+				title: 'Message Queued 📩',
+				description: "We'll send your message automatically when you're back online.",
+			})
+			setMessage('')
+		}
+	}, [isOffline, isError])
 
 	const submitHandler = async (event: FormEvent) => {
 		event.preventDefault()
