@@ -4,13 +4,15 @@ import { useEffect } from 'react'
 import { Stack } from '@chakra-ui/react'
 import { ChatHeader, MessageList, MessageInput } from '@features/chat/components'
 import useGetChatParticipant from '@features/chat/hooks/useGetChatParticipant.ts'
-import { useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@store/chat/chatApi.ts'
+import { chatApi, useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@store/chat/chatApi.ts'
 import { setCurrentParticipant } from '@store/chat/chatSlice.ts'
 import WebSocket from '@store/websocket.ts'
+import useIsOffline from '@hooks/useIsOffline.ts'
 
 const ChatWindow = () => {
 	const { chatId } = useParams()
 	const navigate = useNavigate()
+	const isOffline = useIsOffline()
 	const dispatch = useDispatch()
 
 	const {
@@ -20,13 +22,24 @@ const ChatWindow = () => {
 		isLoading: isLoadingParticipant,
 	} = useGetChatParticipant(chatId!)
 
-	const { data: messages = [], isLoading: isMessagesLoading } = useGetMessagesQuery(chatId, {
+	const {
+		currentData: messages = [],
+		isFetching: isMessagesLoading,
+		isError,
+	} = useGetMessagesQuery(chatId!, {
 		skip: !isSuccessParticipant,
 	})
 
 	const [markAsReadMessages] = useMarkAsReadMessagesMutation()
 
-	const isLoading = isMessagesLoading || isLoadingParticipant
+	const isLoading = isLoadingParticipant || isMessagesLoading
+
+	useEffect(() => {
+		if (isError && isOffline) {
+			// @ts-ignore
+			dispatch(chatApi.util.upsertQueryData('getMessages', chatId, []))
+		}
+	}, [isError, isOffline])
 
 	useEffect(() => {
 		if (isErrorParticipant) {
@@ -44,25 +57,28 @@ const ChatWindow = () => {
 	}, [isSuccessParticipant, participant, dispatch])
 
 	useEffect(() => {
-		const socket = WebSocket.getInstance()
-		if (socket) {
-			socket.on('deleteChat', ({ participant }) => {
-				if (participant._id === chatId) {
-					navigate('/chat')
-				}
-			})
+		if (!isOffline) {
+			const socket = WebSocket.getInstance()
+			if (socket) {
+				socket.on('deleteChat', ({ participant }) => {
+					if (participant._id === chatId) {
+						navigate('/chat')
+					}
+				})
+			}
 		}
-	}, [])
+	}, [isOffline])
 
 	useEffect(() => {
-		if (chatId && messages) {
+		if (!isOffline && chatId && messages) {
 			const unreadByUser = messages.filter((message: any) => message.receiverId !== chatId && !message.readByReceiver)
 
 			if (unreadByUser.length !== 0) {
+				console.log('markAsReadMessages')
 				markAsReadMessages({ chatId })
 			}
 		}
-	}, [messages, chatId])
+	}, [messages, chatId, isOffline])
 
 	return (
 		<Stack
@@ -75,7 +91,7 @@ const ChatWindow = () => {
 			gap={0}
 		>
 			<ChatHeader
-				disabled={isLoading}
+				disabled={isLoading || isErrorParticipant}
 				participant={participant}
 			/>
 			<MessageList
@@ -83,7 +99,7 @@ const ChatWindow = () => {
 				participant={participant}
 				loading={isLoading}
 			/>
-			<MessageInput disabled={isLoading} />
+			<MessageInput disabled={isLoading || isErrorParticipant} />
 		</Stack>
 	)
 }

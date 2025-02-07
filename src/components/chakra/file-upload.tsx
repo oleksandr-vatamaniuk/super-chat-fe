@@ -1,16 +1,7 @@
 'use client'
 
 import type { ButtonProps, RecipeProps } from '@chakra-ui/react'
-import {
-	Button,
-	FileUpload as ChakraFileUpload,
-	Icon,
-	IconButton,
-	Span,
-	Text,
-	useFileUploadContext,
-	useRecipe,
-} from '@chakra-ui/react'
+import { Button, FileUpload as ChakraFileUpload, Span, Text, useFileUploadContext, useRecipe } from '@chakra-ui/react'
 import * as React from 'react'
 import { LuFile, LuUpload, LuX } from 'react-icons/lu'
 
@@ -46,12 +37,10 @@ export const FileUploadDropzone = React.forwardRef<HTMLInputElement, FileUploadD
 				ref={ref}
 				{...rest}
 			>
-				<Icon
-					fontSize='xl'
-					color='fg.muted'
-				>
-					<LuUpload />
-				</Icon>
+				<LuUpload
+					size={32}
+					color='#52525b'
+				/>
 				<ChakraFileUpload.DropzoneContent>
 					<div>{label}</div>
 					{description && <Text color='fg.muted'>{description}</Text>}
@@ -79,12 +68,10 @@ const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProps>(func
 			ref={ref}
 		>
 			<ChakraFileUpload.ItemPreview asChild>
-				<Icon
-					fontSize='lg'
-					color='fg.muted'
-				>
-					<LuFile />
-				</Icon>
+				<LuFile
+					color='#52525b'
+					size='28'
+				/>
 			</ChakraFileUpload.ItemPreview>
 
 			{showSize ? (
@@ -98,13 +85,10 @@ const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProps>(func
 
 			{clearable && (
 				<ChakraFileUpload.ItemDeleteTrigger asChild>
-					<IconButton
-						variant='ghost'
-						color='fg.muted'
-						size='xs'
-					>
-						<LuX />
-					</IconButton>
+					<LuX
+						color='#52525b'
+						size='20'
+					/>
 				</ChakraFileUpload.ItemDeleteTrigger>
 			)}
 		</ChakraFileUpload.Item>

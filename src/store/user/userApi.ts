@@ -28,6 +28,7 @@ export const userApi = createApi({
 		}),
 		getUserById: builder.query({
 			query(id) {
+				console.log('get user by id')
 				return {
 					url: `/user/${id}`,
 					credentials: 'include',

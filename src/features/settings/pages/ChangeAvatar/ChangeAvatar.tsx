@@ -1,40 +1,41 @@
-import { Box, Heading, Text } from '@chakra-ui/react'
+import { Box, FileUploadFileChangeDetails, Heading, Text, Image, Center } from '@chakra-ui/react'
 import { Button } from '@components/chakra/button.tsx'
 import { FileUploadDropzone, FileUploadList, FileUploadRoot } from '@components/chakra/file-upload.tsx'
 import { useEffect, useState } from 'react'
 import { useUpdateAvatarMutation } from '@store/user/userApi.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 
-const ChangeAvatar = () => {
-	const [file, setFile] = useState<any>(null)
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
-	const [updateAvatar, { isLoading, isSuccess, isError, error }] = useUpdateAvatarMutation()
+type FileType = File | null
+
+const ChangeAvatar = () => {
+	const [file, setFile] = useState<FileType>(null)
+	const [imageSrc, setImageSrc] = useState<string>('')
+	const [updateAvatar, { isLoading, isSuccess }] = useUpdateAvatarMutation()
 
 	const submitHandler = () => {
-		if (file && file.acceptedFiles.length !== 0) {
+		if (file) {
 			const formData = new FormData()
-			formData.append('image', file.acceptedFiles[0])
+			formData.append('image', file)
 			updateAvatar(formData)
-
-			file.acceptedFiles = []
-			setFile(null)
 		}
+	}
+
+	const handleFileChange = (e: FileUploadFileChangeDetails) => {
+		const selectedFile = e.acceptedFiles[0] || null
+		setFile(selectedFile)
+		setImageSrc(selectedFile ? URL.createObjectURL(selectedFile) : '')
 	}
 
 	useEffect(() => {
 		if (isSuccess) {
+			setFile(null)
+			setImageSrc('')
 			toaster.create({
 				title: 'Image updated successfully!',
 				type: 'success',
 			})
-		}
-		if (isError) {
-			if ((error as any).data.message) {
-				toaster.create({
-					description: (error as any).data.message,
-					type: 'error',
-				})
-			}
 		}
 	}, [isLoading])
 
@@ -58,18 +59,36 @@ const ChangeAvatar = () => {
 				mb={5}
 				maxW='xl'
 				alignItems='stretch'
+				cursor='pointer'
 			>
 				<FileUploadRoot
-					maxFileSize={5 * 1024 * 1024} // 5mb
+					maxFileSize={MAX_FILE_SIZE}
 					accept={'image/*'}
 					maxFiles={1}
-					onFileChange={(details) => setFile(details)}
+					onFileChange={handleFileChange}
 					disabled={isLoading}
 				>
-					<FileUploadDropzone
-						label='Drag and drop or click here to upload'
-						description='.png, .jpg up to 5MB'
-					/>
+					{!file ? (
+						<FileUploadDropzone
+							label='Drag and drop or click here to upload'
+							description='.png, .jpg up to 5MB'
+						/>
+					) : (
+						<Center
+							border='1px solid'
+							borderColor='brand.grey.150'
+							borderRadius='sm'
+							h='250px'
+							bgColor='brand.grey.100'
+						>
+							<Image
+								boxSize='150px'
+								borderRadius='full'
+								fit='cover'
+								src={imageSrc}
+							/>
+						</Center>
+					)}
 					<FileUploadList
 						showSize
 						clearable

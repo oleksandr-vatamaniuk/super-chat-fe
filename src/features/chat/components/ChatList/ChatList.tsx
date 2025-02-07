@@ -15,28 +15,24 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useParams } from 'react-router-dom'
 import { BiConversation } from 'react-icons/bi'
 import { ChatItem, NewChatModal } from '@features/chat/components'
-import { useGetChatsQuery, useWebsocketConnectQuery } from '@store/chat/chatApi.ts'
+import { useGetChatsQuery } from '@store/chat/chatApi.ts'
 import { useSelector } from 'react-redux'
 import { selectOnlineUsers } from '@store/chat/chatSlice.ts'
+import useIsOffline from '@hooks/useIsOffline.ts'
+import useSortedChats from '@features/chat/hooks/useSortedChats.ts'
 
 const ChatList = () => {
 	const { chatId } = useParams()
+	const isOffline = useIsOffline()
 
 	const { data: chats = [], isLoading } = useGetChatsQuery(undefined)
 
-	const { data: websocket } = useWebsocketConnectQuery(undefined)
-
-	// const { isWebsocketConnected } = useWebsocketConnectQuery(undefined, {
-	// 	selectFromResult: ({data}) => ({
-	// 		isWebsocketConnected: data?.isWebsocketConnected
-	// 	})
-	// })
-
-	console.log('isWebsocketConnected', websocket)
-
 	const onlineUsers = useSelector(selectOnlineUsers)
 
-	const loading = isLoading || false
+	const { sortedChats, setOrdering, ordering } = useSortedChats(chats, {
+		key: 'date',
+		order: 'desc',
+	})
 
 	const renderHeader = () => (
 		<Box pt={7}>
@@ -46,7 +42,7 @@ const ChatList = () => {
 				mb={4}
 			>
 				<Heading>Chats</Heading>
-				<NewChatModal disabled={isLoading} />
+				<NewChatModal disabled={isLoading || isOffline} />
 			</HStack>
 			{!isLoading && chats.length > 0 && (
 				<SimpleGrid
@@ -58,8 +54,9 @@ const ChatList = () => {
 							color='brand.text/50'
 							variant='ghost'
 							px={{ base: 0, md: 4 }}
+							onClick={() => setOrdering('name')}
 						>
-							Name <IoIosArrowDown />
+							Name {ordering.key === 'name' && (ordering.order === 'desc' ? <IoIosArrowDown /> : <IoIosArrowUp />)}
 						</Button>
 					</GridItem>
 					<GridItem colSpan={{ base: 9, md: 5, lg: 4 }}>
@@ -68,8 +65,10 @@ const ChatList = () => {
 								color='brand.text/50'
 								variant='ghost'
 								px={{ base: 0, md: 4 }}
+								onClick={() => setOrdering('date')}
 							>
-								Last Message <IoIosArrowUp />
+								Last Message{' '}
+								{ordering.key === 'date' && (ordering.order === 'desc' ? <IoIosArrowDown /> : <IoIosArrowUp />)}
 							</Button>
 						</Flex>
 					</GridItem>
@@ -87,7 +86,7 @@ const ChatList = () => {
 			borderRightWidth={chatId ? '1px' : 0}
 			borderRightColor='brand.divider'
 		>
-			{chats.map(({ _id, unreadMessagesCount, lastMessage, participant }: any) => {
+			{sortedChats.map(({ _id, unreadMessagesCount, lastMessage, participant }: any) => {
 				const isParticipantOnline = onlineUsers.includes(participant._id)
 				return (
 					<ChatItem
@@ -180,9 +179,9 @@ const ChatList = () => {
 			px={chatId ? 0 : { base: 4, md: 8 }}
 		>
 			{!chatId && renderHeader()}
-			{loading && renderLoadingSkeletons()}
-			{!loading && chats.length > 0 && renderChatItems()}
-			{!loading && chats.length === 0 && renderNoChats()}
+			{isLoading && renderLoadingSkeletons()}
+			{!isLoading && chats.length > 0 && renderChatItems()}
+			{!isLoading && chats.length === 0 && renderNoChats()}
 		</Box>
 	)
 }

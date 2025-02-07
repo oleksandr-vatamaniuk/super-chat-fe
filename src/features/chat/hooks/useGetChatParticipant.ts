@@ -1,25 +1,34 @@
 import { useGetChatsQuery } from '@store/chat/chatApi.ts'
 import { useGetUserByIdQuery } from '@store/user/userApi.ts'
+import useIsOffline from '@hooks/useIsOffline.ts'
 
 const useGetChatParticipant = (chatId: string) => {
-	const { chatItem } = useGetChatsQuery(undefined, {
-		selectFromResult: ({ data }) => ({
+	const isOffline = useIsOffline()
+
+	const { chatItem, isLoading: isChatsLoading } = useGetChatsQuery(undefined, {
+		selectFromResult: ({ data, isLoading }) => ({
 			chatItem: data?.find((item: any) => item.participant._id === chatId),
+			isLoading,
 		}),
 	})
 
 	const {
 		data: user,
-		isError,
-		isLoading,
+		isError: isUserError,
+		isLoading: isUserLoading,
 		isSuccess: isUserSuccess,
 	} = useGetUserByIdQuery(chatId, {
-		skip: !!chatItem,
+		skip: isOffline || !!chatItem,
 	})
 
 	const isSuccess = !!chatItem || isUserSuccess
 
 	const userData = chatItem?.participant || user || null
+
+	const isLoading = isChatsLoading || isUserLoading
+
+	const isError = isUserError || (isOffline && !isLoading && !userData)
+	console.log(isError)
 
 	return { data: userData, isLoading, isError, isSuccess }
 }

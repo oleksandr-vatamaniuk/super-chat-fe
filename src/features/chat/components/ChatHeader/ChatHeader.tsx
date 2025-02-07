@@ -24,19 +24,6 @@ const useOnlineStatus = (participant: any) => {
 			isOnline: isUserOnline,
 			lastSeen: participant?.updatedAt,
 		})
-
-		// setStatus((prevStatus) => {
-		// 	const hasParticipantChanged = prevStatus.lastSeen !== participant.updatedAt;
-		//
-		// 	return {
-		// 		isOnline: isUserOnline,
-		// 		lastSeen: isUserOnline
-		// 			? new Date().toISOString()
-		// 			: hasParticipantChanged
-		// 				? participant.updatedAt
-		// 				: prevStatus.lastSeen,
-		// 	};
-		// });
 	}, [isUserOnline, participant])
 
 	return status

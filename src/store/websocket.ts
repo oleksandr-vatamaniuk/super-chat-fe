@@ -22,6 +22,19 @@ class WebSocket {
 				},
 			})
 
+			window.addEventListener('offline', () => {
+				console.log('WebSocket connection closed')
+				console.log(WebSocket.instance)
+				WebSocket.instance?.disconnect()
+			})
+
+			window.addEventListener('online', () => {
+				console.log('WebSocket back online')
+				if (!WebSocket.instance?.connected) {
+					WebSocket.instance?.connect()
+				}
+			})
+
 			// WebSocket.instance.connect();
 
 			WebSocket.instance.on('connect', () => {

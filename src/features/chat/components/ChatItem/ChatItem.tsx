@@ -17,7 +17,7 @@ import { FC } from 'react'
 import { NavLink as ReactRouterLink } from 'react-router-dom'
 import { chatItemRecipe } from '@theme/slotRecipes'
 import { Avatar } from '@components/chakra/avatar.tsx'
-import { extractTime } from '@utils/exactTime.ts'
+import { getRelativeTime } from '@utils/getRelativeTime.ts'
 
 type ChatItemVariantProps = RecipeVariantProps<typeof chatItemRecipe>
 
@@ -126,14 +126,12 @@ const ChatItem: FC<ChatItemProps> = ({
 						</GridItem>
 						<GridItem colSpan={{ base: 6, md: 5, lg: 4 }}>
 							<Flex css={styles.detail}>
-								<Box
-									as='span'
-									fontWeight='normal'
-									fontSize='sm'
+								<Text
 									color='brand.grey.450'
+									textStyle={size === 'small' ? 'xs' : 'sm'}
 								>
-									{extractTime(messageTime)}
-								</Box>
+									{getRelativeTime(messageTime)}
+								</Text>
 								{size === 'small' && unreadMessagesCount !== 0 && (
 									<Circle
 										fontSize='xs'

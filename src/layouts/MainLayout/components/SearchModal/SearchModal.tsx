@@ -2,7 +2,6 @@ import { Box, HStack, Input, Stack, Text, Highlight, Skeleton, Separator } from 
 import { LuSearch } from 'react-icons/lu'
 import { GoInbox } from 'react-icons/go'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
 import { DialogBody, DialogContent, DialogRoot, DialogTrigger } from '@components/chakra/dialog.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { Avatar } from '@components/chakra/avatar.tsx'
@@ -12,11 +11,16 @@ import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@store/user/userSlice.ts'
 import { extractTime } from '@utils/exactTime.ts'
+import useIsOffline from '@hooks/useIsOffline.ts'
+import { useNavigate } from 'react-router-dom'
 
 const SearchModal = () => {
+	const [open, setOpen] = useState(false)
 	const [searchText, setSearchText] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
 	const user = useSelector(selectUser)
+	const isOffline = useIsOffline()
+	const navigate = useNavigate()
 
 	const { participants } = useGetChatsQuery(undefined, {
 		selectFromResult: ({ data }) => ({
@@ -95,56 +99,59 @@ const SearchModal = () => {
 			const avatar =
 				senderId === user._id ? user.avatar : participants.find((item: any) => item._id === senderId).avatar || ''
 
-			const link = `/chat/${senderId === user._id ? receiverId : senderId}#${_id}`
+			const clickHandler = () => {
+				setOpen(false)
+				navigate(`/chat/${senderId === user._id ? receiverId : senderId}?message=${_id}`)
+			}
 
 			return (
-				<Box key={_id}>
-					<Link
-						key={_id}
-						to={link}
+				<Box
+					key={_id}
+					cursor='pointer'
+					role='link'
+					onClick={clickHandler}
+				>
+					<HStack
+						px={2}
+						py={2.5}
+						borderRadius='lg'
+						_hover={{ bg: 'brand.blue.200' }}
 					>
-						<HStack
-							px={2}
-							py={2.5}
-							borderRadius='lg'
-							_hover={{ bg: 'brand.blue.200' }}
+						<Avatar
+							colorPalette='blue'
+							name={name}
+							size='lg'
+							src={avatar}
+						/>
+						<Stack
+							gap='1'
+							w='full'
 						>
-							<Avatar
-								colorPalette='blue'
-								name={name}
-								size='lg'
-								src={avatar}
-							/>
-							<Stack
-								gap='1'
+							<Text fontWeight='medium'>{name}</Text>
+							<HStack
+								color='fg.muted'
+								h='20px'
 								w='full'
+								overflow='hidden'
+								justifyContent='space-between'
 							>
-								<Text fontWeight='medium'>{name}</Text>
-								<HStack
-									color='fg.muted'
-									h='20px'
-									w='full'
-									overflow='hidden'
-									justifyContent='space-between'
-								>
-									<Box>
-										<Highlight
-											styles={{ bg: 'yellow' }}
-											query={searchText}
-										>
-											{message}
-										</Highlight>
-									</Box>
-									<Text
-										textStyle='sm'
-										color='brand.grey.250'
+								<Box>
+									<Highlight
+										styles={{ bg: 'yellow' }}
+										query={searchText}
 									>
-										{extractTime(createdAt)}
-									</Text>
-								</HStack>
-							</Stack>
-						</HStack>
-					</Link>
+										{message}
+									</Highlight>
+								</Box>
+								<Text
+									textStyle='sm'
+									color='brand.grey.250'
+								>
+									{extractTime(createdAt)}
+								</Text>
+							</HStack>
+						</Stack>
+					</HStack>
 					{index < messages.length - 1 && <Separator borderColor='brand.grey.100' />}
 				</Box>
 			)
@@ -156,6 +163,8 @@ const SearchModal = () => {
 			placement={{ base: 'center', md: 'top' }}
 			scrollBehavior='inside'
 			initialFocusEl={() => inputRef.current}
+			open={open}
+			onOpenChange={(e) => setOpen(e.open)}
 		>
 			<DialogTrigger asChild>
 				<Box
@@ -172,6 +181,7 @@ const SearchModal = () => {
 						justifyContent='start'
 						px={{ base: 2, md: 4, lg: 6 }}
 						gap={4}
+						disabled={isOffline}
 					>
 						<LuSearch />
 						<Text hideBelow='md'>Search...</Text>

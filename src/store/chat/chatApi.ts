@@ -109,8 +109,12 @@ export const chatApi = createApi({
 				try {
 					await queryFulfilled
 				} catch (error) {
-					patchUpdateChatList.undo()
-					patchChatMessages.undo()
+					if (navigator.onLine) {
+						patchUpdateChatList.undo()
+						patchChatMessages.undo()
+					}
+
+					console.log('message send error!')
 					console.log(error)
 				}
 			},
@@ -167,6 +171,13 @@ export const chatApi = createApi({
 
 					updateCachedData((draft) => {
 						draft.isWebsocketConnected = true
+					})
+				})
+
+				socket.on('disconnect', () => {
+					dispatch(setOnlineUsers([]))
+					updateCachedData((draft) => {
+						draft.isWebsocketConnected = false
 					})
 				})
 

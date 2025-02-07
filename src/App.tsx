@@ -7,7 +7,7 @@ import { TermsAndPolicy, Error } from '@pages'
 import ChatList from '@features/chat/components/ChatList/ChatList.tsx'
 import { useMediaQuery } from 'react-responsive'
 import { Toaster } from '@components/chakra/toaster.tsx'
-import RequireAuth from '@components/RequireAuth/RequireAuth.tsx'
+import { AnonymousRoutes, RequireAuth } from '@components'
 
 function App() {
 	const isMobile = useMediaQuery({
@@ -19,45 +19,37 @@ function App() {
 			<Toaster />
 			<Routes>
 				<Route element={<AuthLayout />}>
-					<Route
-						index
-						element={
-							<Navigate
-								to='/login'
-								replace
-							/>
-						}
-					/>
-					<Route
-						path='login'
-						element={<Login />}
-					/>
-					<Route
-						path='signup'
-						element={<SignUp />}
-					/>
-					<Route
-						path='verify'
-						element={<VerifyEmail />}
-					/>
-					<Route
-						path='forgot-password'
-						element={<ForgotPassword />}
-					/>
-					<Route
-						path='reset-password'
-						element={<ResetPassword />}
-					/>
-					<Route
-						path='thankYou'
-						element={<ThankYou />}
-					/>
+					<Route element={<AnonymousRoutes />}>
+						<Route
+							path='login'
+							element={<Login />}
+						/>
+						<Route
+							path='signup'
+							element={<SignUp />}
+						/>
+						<Route
+							path='verify'
+							element={<VerifyEmail />}
+						/>
+						<Route
+							path='forgot-password'
+							element={<ForgotPassword />}
+						/>
+						<Route
+							path='reset-password'
+							element={<ResetPassword />}
+						/>
+						<Route
+							path='thankYou'
+							element={<ThankYou />}
+						/>
+					</Route>
 					<Route
 						path='404'
 						element={<Error />}
 					/>
 				</Route>
-
 				<Route element={<RequireAuth />}>
 					<Route element={<MainLayout />}>
 						<Route
@@ -112,7 +104,6 @@ function App() {
 						</Route>
 					</Route>
 				</Route>
-
 				<Route
 					path='privacyPolicy'
 					element={<TermsAndPolicy />}
