@@ -91,7 +91,7 @@ const ChatWindow = () => {
 			gap={0}
 		>
 			<ChatHeader
-				disabled={isLoading}
+				disabled={isLoading || isErrorParticipant}
 				participant={participant}
 			/>
 			<MessageList
@@ -99,7 +99,7 @@ const ChatWindow = () => {
 				participant={participant}
 				loading={isLoading}
 			/>
-			<MessageInput disabled={isLoading} />
+			<MessageInput disabled={isLoading || isErrorParticipant} />
 		</Stack>
 	)
 }
