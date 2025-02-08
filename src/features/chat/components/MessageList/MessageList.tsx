@@ -1,10 +1,10 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { Message, MessageSkeleton } from '@features/chat/components'
 import { useSelector } from 'react-redux'
-import { selectUser } from '@store/user/userSlice.ts'
 import { FC, useEffect, useRef } from 'react'
 import useIsOffline from '@hooks/useIsOffline.ts'
 import { useSearchParams } from 'react-router-dom'
+import { selectUser } from '@features/user/userSlice.ts'
 
 type MessageListProps = {
 	messages: any[]

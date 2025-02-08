@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - Build, Publish, and Deploy
+name: CI/CD Pipeline - Test, Build, Publish, and Deploy
 on:
   push:
     branches: ['master']

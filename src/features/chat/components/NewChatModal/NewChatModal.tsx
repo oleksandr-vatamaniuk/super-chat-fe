@@ -6,9 +6,9 @@ import { Link } from 'react-router'
 import { DialogBody, DialogContent, DialogRoot, DialogTrigger } from '@components/chakra/dialog.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { Avatar } from '@components/chakra/avatar.tsx'
-import { useFindUsersByNameMutation } from '@store/user/userApi.ts'
 import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 import useDebounce from '@hooks/useDebounce.ts'
+import { useFindUsersByNameMutation } from '@features/user/userApi.ts'
 
 const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 	const [searchQuery, setSearchQuery] = useState('')

@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react'
 import { Heading, Stack, Text } from '@chakra-ui/react'
 import { DialogBody, DialogCloseTrigger, DialogContent, DialogRoot } from '@components/chakra/dialog.tsx'
 import { Button } from '@components/chakra/button.tsx'
-import { useResendVerificationEmailMutation } from '@store/auth/authApi.ts'
+import { useResendVerificationEmailMutation } from '@features/auth/authApi.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 
 const ResendVerificationCodeModal: FC<{ initialOpen: boolean; onClose: () => void; email: string }> = ({

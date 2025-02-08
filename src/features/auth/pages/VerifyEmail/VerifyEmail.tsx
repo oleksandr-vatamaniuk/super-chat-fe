@@ -1,5 +1,5 @@
 import { Center, Heading, Text, Stack, Box } from '@chakra-ui/react'
-import { useVerifyUserMutation } from '@store/auth/authApi.ts'
+import { useVerifyUserMutation } from '@features/auth/authApi.ts'
 import { useNavigate } from 'react-router-dom'
 import { toaster } from '@components/chakra/toaster.tsx'
 import { useEffect } from 'react'

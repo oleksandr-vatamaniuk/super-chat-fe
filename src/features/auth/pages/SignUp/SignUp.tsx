@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Button } from '@components/chakra/button.tsx'
 import { CheckBoxField, PasswordField, TextField } from '@components'
-import { useRegisterUserMutation } from '@store/auth/authApi.ts'
+import { useRegisterUserMutation } from '@features/auth/authApi.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 
 interface SignUpFormValues {

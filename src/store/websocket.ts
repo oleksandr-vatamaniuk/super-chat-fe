@@ -35,8 +35,6 @@ class WebSocket {
 				}
 			})
 
-			// WebSocket.instance.connect();
-
 			WebSocket.instance.on('connect', () => {
 				console.log('connected')
 			})
@@ -47,6 +45,9 @@ class WebSocket {
 
 			WebSocket.instance.on('connect_error', (error) => {
 				console.error('WebSocket error!!!!', error)
+				if (!WebSocket.instance?.connected) {
+					WebSocket.instance?.disconnect()
+				}
 			})
 		}
 

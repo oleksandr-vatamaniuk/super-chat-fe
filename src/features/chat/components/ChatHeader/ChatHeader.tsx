@@ -8,7 +8,7 @@ import { Avatar } from '@components/chakra/avatar.tsx'
 import { Status } from '@components/chakra/status.tsx'
 import { UserDetailModal } from '@features/chat/components'
 import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
-import { selectIsUserOnline } from '@store/chat/chatSlice.ts'
+import { selectIsUserOnline } from '@features/chat/chatSlice.ts'
 import { extractTime } from '@utils/exactTime.ts'
 
 const useOnlineStatus = (participant: any) => {

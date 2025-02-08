@@ -1,6 +1,6 @@
-import { useGetChatsQuery } from '@store/chat/chatApi.ts'
-import { useGetUserByIdQuery } from '@store/user/userApi.ts'
+import { useGetChatsQuery } from '@features/chat/chatApi.ts'
 import useIsOffline from '@hooks/useIsOffline.ts'
+import { useGetUserByIdQuery } from '@features/user/userApi.ts'
 
 const useGetChatParticipant = (chatId: string) => {
 	const isOffline = useIsOffline()

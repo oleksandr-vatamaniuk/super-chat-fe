@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { TextField } from '@components/index.ts'
 import { Button } from '@components/chakra/button.tsx'
-import { useForgotPasswordMutation } from '@store/auth/authApi.ts'
+import { useForgotPasswordMutation } from '@features/auth/authApi.ts'
 import { useEffect } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
 

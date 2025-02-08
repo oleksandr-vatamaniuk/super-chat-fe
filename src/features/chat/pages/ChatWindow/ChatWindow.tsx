@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import { Stack } from '@chakra-ui/react'
 import { ChatHeader, MessageList, MessageInput } from '@features/chat/components'
 import useGetChatParticipant from '@features/chat/hooks/useGetChatParticipant.ts'
-import { chatApi, useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@store/chat/chatApi.ts'
-import { setCurrentParticipant } from '@store/chat/chatSlice.ts'
+import { chatApiSlice, useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@features/chat/chatApi.ts'
+import { setCurrentParticipant } from '@features/chat/chatSlice.ts'
 import WebSocket from '@store/websocket.ts'
 import useIsOffline from '@hooks/useIsOffline.ts'
 
@@ -37,7 +37,7 @@ const ChatWindow = () => {
 	useEffect(() => {
 		if (isError && isOffline) {
 			// @ts-ignore
-			dispatch(chatApi.util.upsertQueryData('getMessages', chatId, []))
+			dispatch(chatApiSlice.util.upsertQueryData('getMessages', chatId, []))
 		}
 	}, [isError, isOffline])
 
