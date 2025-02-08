@@ -7,11 +7,11 @@ import { Provider as ReduxProvider } from 'react-redux'
 import App from './App.tsx'
 import store from '@store/store.ts'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { registerSW } from 'virtual:pwa-register'
+// import { registerSW } from 'virtual:pwa-register'
 
-if ('serviceWorker' in navigator) {
-	registerSW()
-}
+// if ('serviceWorker' in navigator) {
+// 	registerSW()
+// }
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
