@@ -2,13 +2,54 @@ name: CI/CD Pipeline - Build, Publish, and Deploy
 on:
   push:
     branches: ['master']
+  pull_request:
+    branches: ['master']
 
 env:
   IMAGE_NAME: oleksandrvatamaniuk/super-chat-react
 
 jobs:
-  build-and-publish:
+  unit-tests:
+    name: Run Unit Test
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: yarn install
+      - name: Run Unit Tests
+        run: yarn test
+  e2e-test:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: [unit-tests]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build Project
+        run: yarn build
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright E2E Tests
+        run: yarn test:e2e:ci
+  build-and-publish:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -28,6 +69,7 @@ jobs:
     name: Deploy
     needs: [build-and-publish]
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8

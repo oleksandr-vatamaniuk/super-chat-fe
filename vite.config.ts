@@ -1,16 +1,15 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vite.dev/config/
 export default defineConfig({
 	plugins: [
 		react(),
 		tsconfigPaths(),
 		VitePWA({
 			devOptions: {
-				enabled: true,
+				enabled: false,
 				type: 'module',
 			},
 			strategies: 'injectManifest',
@@ -65,10 +64,5 @@ export default defineConfig({
 		strictPort: true,
 		host: true,
 		origin: 'http://0.0.0.0:3000',
-	},
-	test: {
-		globals: true,
-		environment: 'jsdom',
-		setupFiles: './vitest.setup.ts',
 	},
 })
