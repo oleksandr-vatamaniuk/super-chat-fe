@@ -1,14 +1,15 @@
 import { FaPlus } from 'react-icons/fa6'
-import { Box, Text, Input, Stack, HStack, Flex, Separator, Skeleton } from '@chakra-ui/react'
-import { GoInbox } from 'react-icons/go'
+import { Box, Text, Input, Stack, HStack, Flex, Separator } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { DialogBody, DialogContent, DialogRoot, DialogTrigger } from '@components/chakra/dialog.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { Avatar } from '@components/chakra/avatar.tsx'
-import { useFindUsersByNameMutation } from '@store/user/userApi.ts'
-import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 import useDebounce from '@hooks/useDebounce.ts'
+import { useFindUsersByNameMutation } from '@features/user/userApi.ts'
+import NewChatModalLoadingState from '@features/chat/components/NewChatModal/NewChatModalLoadingState.tsx'
+import NewChatModalEmptyState from '@features/chat/components/NewChatModal/NewChatModalEmptyState.tsx'
+import { IUser } from '@types'
 
 const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 	const [searchQuery, setSearchQuery] = useState('')
@@ -27,59 +28,8 @@ const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 		setSearchQuery(event.target.value.trim())
 	}
 
-	const renderEmptyState = () => (
-		<Stack
-			p={8}
-			alignItems='center'
-			gap={4}
-		>
-			<Box color='fg.muted'>
-				<GoInbox size={32} />
-			</Box>
-			<Text color='fg.muted'>
-				No results found for{' '}
-				<Box
-					fontWeight='semibold'
-					as='span'
-				>
-					{searchQuery}
-				</Box>
-			</Text>
-		</Stack>
-	)
-
-	const renderLoadingSkeleton = () => (
-		<Stack gap={2}>
-			{Array(3)
-				.fill(null)
-				.map((_, index) => (
-					<HStack
-						key={index}
-						px={2}
-						py={2.5}
-					>
-						<SkeletonCircle size='11' />
-						<Stack
-							w='full'
-							gap={1}
-						>
-							<Skeleton
-								height='5'
-								width='25%'
-							/>
-							<Skeleton
-								height='5'
-								width='80%'
-							/>
-						</Stack>
-						{index < 2 && <Separator borderColor='brand.grey.100' />}
-					</HStack>
-				))}
-		</Stack>
-	)
-
 	const renderResults = () =>
-		results.map(({ name, _id, avatar, email }: any, index: number) => (
+		results.map(({ name, _id, avatar, email }: IUser, index: number) => (
 			<Box key={_id}>
 				<Link to={`/chat/${_id}`}>
 					<Flex
@@ -144,15 +94,21 @@ const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 			<DialogContent>
 				<DialogBody p={1}>
 					<Input
+						id='searchUsers'
 						onChange={handleSearchChange}
 						ref={inputRef}
 						type='text'
 						placeholder='Enter user name'
 					/>
-					<Stack gap={0}>
-						{isLoading && renderLoadingSkeleton()}
+					<Stack
+						gap={0}
+						data-testid='newChatStack'
+					>
+						{isLoading && <NewChatModalLoadingState />}
 						{!isLoading && results.length > 0 && renderResults()}
-						{!isLoading && results.length === 0 && debouncedSearchQuery.length > 0 && renderEmptyState()}
+						{!isLoading && results.length === 0 && debouncedSearchQuery.length > 0 && (
+							<NewChatModalEmptyState searchQuery={searchQuery} />
+						)}
 					</Stack>
 				</DialogBody>
 			</DialogContent>

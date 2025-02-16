@@ -1,28 +1,5 @@
 import { useState, useMemo } from 'react'
-
-interface Participant {
-	_id: string
-	name: string
-	updatedAt: string
-	avatar: string
-}
-
-interface LastMessage {
-	_id: string
-	senderId: string
-	receiverId: string
-	message: string
-	readByReceiver: boolean
-	createdAt: string
-	updatedAt: string
-}
-
-interface Chat {
-	_id: string
-	unreadMessagesCount: number
-	lastMessage?: LastMessage
-	participant: Participant
-}
+import { ChatItem } from '@types'
 
 interface SortConfig {
 	key: 'name' | 'date'
@@ -34,7 +11,7 @@ interface UseSortedChatsOptions {
 	order?: 'asc' | 'desc'
 }
 
-const useSortedChats = (chats: Chat[], options: UseSortedChatsOptions = { key: 'name', order: 'asc' }) => {
+const useSortedChats = (chats: ChatItem[], options: UseSortedChatsOptions = { key: 'name', order: 'asc' }) => {
 	const [ordering, setOrdering] = useState<SortConfig>({
 		key: options.key || 'name',
 		order: options.order || 'asc',

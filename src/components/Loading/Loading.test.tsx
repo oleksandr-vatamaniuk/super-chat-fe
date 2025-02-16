@@ -1,17 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import Loading from './Loading'
-import { ChakraProvider } from '@chakra-ui/react'
-import config from '@theme/theme.ts'
+import renderWithChakra from '@testUtils/renderWithChakra.tsx'
 
 describe('Loading Component', () => {
 	it('renders correctly with the logo image and styles', () => {
-		// Render the Loading component wrapped in ChakraProvider for Chakra UI context
-		render(
-			<ChakraProvider value={config}>
-				<Loading />
-			</ChakraProvider>,
-		)
+		renderWithChakra(<Loading />)
 
 		// Check if the outer Box exists with the correct background color and full width
 		const outerBox = screen.getByRole('region')

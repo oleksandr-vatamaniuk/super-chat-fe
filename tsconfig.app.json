@@ -37,7 +37,11 @@
 			"@store/*": ["./store/*"],
 			"@features/*": ["./features/*"],
 			"@utils/*": ["./utils/*"],
-			"@hooks/*": ["./hooks/*"]
+			"@testUtils/*": ["./test-utils/*"],
+			"@hooks/*": ["./hooks/*"],
+			"@guards": ["./guards"],
+			"@types": ["./types"],
+			"@guards/*": ["./guards/*"]
 		}
 	},
 	"include": ["src"]

@@ -1,9 +1,8 @@
 import { Center, Heading, Text, Stack, Box, Image } from '@chakra-ui/react'
-import { Navigate } from 'react-router-dom'
-import useGetQueryParams from '@hooks/useGetQueryParams.ts'
+import { Navigate, useSearchParams } from 'react-router-dom'
 
 const ThankYou = () => {
-	const queryParams = useGetQueryParams()
+	const [queryParams] = useSearchParams()
 
 	const name = queryParams.get('name')
 	const email = queryParams.get('email')

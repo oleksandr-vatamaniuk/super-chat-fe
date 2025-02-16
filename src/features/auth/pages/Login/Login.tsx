@@ -4,16 +4,16 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { Button } from '@components/chakra/button.tsx'
 import { PasswordField, TextField } from '@components'
-import { useLoginMutation } from '@store/auth/authApi.ts'
+import { useLoginMutation } from '@features/auth/authApi.ts'
 import { useEffect, useState } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ResendVerificationCodeModal } from '@features/auth/components'
 import { useGoogleLogin } from '@react-oauth/google'
 import { useDispatch } from 'react-redux'
-import { setCredentials } from '@store/auth/authSlice.ts'
+import { setCredentials } from '@features/auth/authSlice.ts'
 
-interface SignInFormValues {
+export interface SignInFormInput {
 	email: string
 	password: string
 }
@@ -66,8 +66,7 @@ const Login = () => {
 			: 'http://localhost:8000/api/v1/auth/google',
 	})
 
-	// @ts-ignore
-	const submitHandler = async ({ email, password }: SignInFormValues) => {
+	const submitHandler = async ({ email, password }: SignInFormInput) => {
 		login({ email, password })
 	}
 

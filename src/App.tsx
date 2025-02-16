@@ -1,13 +1,13 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { AuthLayout, MainLayout } from '@layouts'
-import { ForgotPassword, Login, ResetPassword, SignUp, ThankYou, VerifyEmail } from '@features/auth/pages'
-import { Chat, ChatWindow } from '@features/chat/pages'
-import { ChangeAvatar, ChangePassword, EditProfile, Settings } from '@features/settings/pages'
-import { TermsAndPolicy, Error } from '@pages'
-import ChatList from '@features/chat/components/ChatList/ChatList.tsx'
 import { useMediaQuery } from 'react-responsive'
 import { Toaster } from '@components/chakra/toaster.tsx'
-import { AnonymousRoutes, RequireAuth } from '@components'
+import { ForgotPassword, Login, ResetPassword, SignUp, ThankYou, VerifyEmail } from '@features/auth/pages'
+import { Chat, ChatList, ChatWindow } from '@features/chat/pages'
+import { ChangeAvatar, ChangePassword, EditProfile } from '@features/user/pages'
+import { TermsAndPolicy, Error } from '@pages'
+import { MainLayout, SettingsLayout } from '@features/user/layouts'
+import { AnonymousRoutes, ProtectedRoutes, RestrictGoogleUsers } from '@guards'
+import AuthLayout from '@features/auth/layouts/AuthLayout/AuthLayout.tsx'
 
 function App() {
 	const isMobile = useMediaQuery({
@@ -50,7 +50,7 @@ function App() {
 						element={<Error />}
 					/>
 				</Route>
-				<Route element={<RequireAuth />}>
+				<Route element={<ProtectedRoutes />}>
 					<Route element={<MainLayout />}>
 						<Route
 							index
@@ -78,7 +78,7 @@ function App() {
 						</Route>
 						<Route
 							path='settings'
-							element={<Settings />}
+							element={<SettingsLayout />}
 						>
 							<Route
 								index
@@ -97,10 +97,12 @@ function App() {
 								path={'change-avatar'}
 								element={<ChangeAvatar />}
 							/>
-							<Route
-								path={'change-password'}
-								element={<ChangePassword />}
-							/>
+							<Route element={<RestrictGoogleUsers />}>
+								<Route
+									path={'change-password'}
+									element={<ChangePassword />}
+								/>
+							</Route>
 						</Route>
 					</Route>
 				</Route>

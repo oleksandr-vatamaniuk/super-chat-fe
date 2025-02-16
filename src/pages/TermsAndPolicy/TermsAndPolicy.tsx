@@ -1,7 +1,12 @@
 import { Box, Button, Container, Heading, Stack, Text } from '@chakra-ui/react'
 import { IoChevronBack } from 'react-icons/io5'
+import { useNavigate } from 'react-router-dom'
 
 const TermsAndPolicy = () => {
+	const navigate = useNavigate()
+
+	const goBackHandler = () => navigate(-1)
+
 	return (
 		<>
 			<Box
@@ -36,6 +41,7 @@ const TermsAndPolicy = () => {
 								bg='none'
 								variant='ghost'
 								color='white'
+								onClick={goBackHandler}
 							>
 								<IoChevronBack />
 							</Button>
@@ -132,6 +138,7 @@ const TermsAndPolicy = () => {
 						px={9}
 						color='fg.muted'
 						mt={6}
+						onClick={goBackHandler}
 					>
 						Back
 					</Button>

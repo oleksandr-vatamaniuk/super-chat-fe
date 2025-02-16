@@ -2,12 +2,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { Stack } from '@chakra-ui/react'
-import { ChatHeader, MessageList, MessageInput } from '@features/chat/components'
+import { ChatHeader, MessageInput } from '@features/chat/components'
 import useGetChatParticipant from '@features/chat/hooks/useGetChatParticipant.ts'
-import { chatApi, useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@store/chat/chatApi.ts'
-import { setCurrentParticipant } from '@store/chat/chatSlice.ts'
+import { chatApiSlice, useGetMessagesQuery, useMarkAsReadMessagesMutation } from '@features/chat/chatApi.ts'
+import { setCurrentParticipant } from '@features/chat/chatSlice.ts'
 import WebSocket from '@store/websocket.ts'
 import useIsOffline from '@hooks/useIsOffline.ts'
+import MessagesList from '@features/chat/components/MessagesList/MessagesList.tsx'
 
 const ChatWindow = () => {
 	const { chatId } = useParams()
@@ -37,7 +38,7 @@ const ChatWindow = () => {
 	useEffect(() => {
 		if (isError && isOffline) {
 			// @ts-ignore
-			dispatch(chatApi.util.upsertQueryData('getMessages', chatId, []))
+			dispatch(chatApiSlice.util.upsertQueryData('getMessages', chatId, []))
 		}
 	}, [isError, isOffline])
 
@@ -52,7 +53,7 @@ const ChatWindow = () => {
 			dispatch(setCurrentParticipant(participant))
 		}
 		return () => {
-			dispatch(setCurrentParticipant({}))
+			dispatch(setCurrentParticipant(null))
 		}
 	}, [isSuccessParticipant, participant, dispatch])
 
@@ -94,9 +95,9 @@ const ChatWindow = () => {
 				disabled={isLoading || isErrorParticipant}
 				participant={participant}
 			/>
-			<MessageList
+			<MessagesList
 				messages={messages}
-				participant={participant}
+				participant={participant!}
 				loading={isLoading}
 			/>
 			<MessageInput disabled={isLoading || isErrorParticipant} />
