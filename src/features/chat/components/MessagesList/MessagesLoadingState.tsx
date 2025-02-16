@@ -1,7 +1,7 @@
 import { Stack, Skeleton, HStack } from '@chakra-ui/react'
 import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 
-const MessageSkeleton = () => {
+const MessagesLoadingState = () => {
 	return (
 		<>
 			<HStack
@@ -9,6 +9,7 @@ const MessageSkeleton = () => {
 				gap='2'
 				justifyContent='end'
 				alignItems='end'
+				data-testid='skeleton-stack'
 			>
 				<Stack alignItems='end'>
 					<Skeleton
@@ -114,4 +115,4 @@ const MessageSkeleton = () => {
 	)
 }
 
-export default MessageSkeleton
+export default MessagesLoadingState

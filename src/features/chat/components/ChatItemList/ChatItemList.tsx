@@ -35,7 +35,7 @@ type ChatItemProps = ChatItemVariantProps & {
 	participant: Participant
 }
 
-const ChatItem: FC<ChatItemProps> = ({
+const ChatItemList: FC<ChatItemProps> = ({
 	isOnline,
 	messageText,
 	size,
@@ -152,4 +152,4 @@ const ChatItem: FC<ChatItemProps> = ({
 	)
 }
 
-export default ChatItem
+export default ChatItemList

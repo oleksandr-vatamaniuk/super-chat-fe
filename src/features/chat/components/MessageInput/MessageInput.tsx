@@ -55,7 +55,7 @@ const MessageInput: FC<MessageInputProps> = ({ disabled = true }) => {
 		if (!message) return
 
 		await sendMessage({
-			receiverId: chatId,
+			receiverId: chatId!,
 			message,
 		})
 	}
@@ -109,6 +109,7 @@ const MessageInput: FC<MessageInputProps> = ({ disabled = true }) => {
 					placeholder='Type Message'
 					value={message}
 					onChange={handleMessageChange}
+					data-testid='sendMessage'
 				/>
 			</form>
 		</Box>

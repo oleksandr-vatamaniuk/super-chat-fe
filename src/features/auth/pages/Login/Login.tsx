@@ -13,7 +13,7 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '@features/auth/authSlice.ts'
 
-interface SignInFormValues {
+export interface SignInFormInput {
 	email: string
 	password: string
 }
@@ -66,8 +66,7 @@ const Login = () => {
 			: 'http://localhost:8000/api/v1/auth/google',
 	})
 
-	// @ts-ignore
-	const submitHandler = async ({ email, password }: SignInFormValues) => {
+	const submitHandler = async ({ email, password }: SignInFormInput) => {
 		login({ email, password })
 	}
 

@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex'
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { logOut, setCredentials } from '@features/auth/authSlice.ts'
+import { setCredentials } from '@features/auth/authSlice.ts'
 import { RootState } from '@store/store.ts'
 
 const baseUrl = import.meta.env.PROD ? 'https://super-chat-node.onrender.com/api/v1' : 'http://localhost:8000/api/v1'
@@ -45,7 +45,6 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 				} else {
 					localStorage.removeItem('accessToken')
 					document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-					api.dispatch(logOut)
 					window.location.href = '/login'
 				}
 			} finally {

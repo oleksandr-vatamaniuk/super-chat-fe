@@ -4,17 +4,16 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { PasswordField } from '@components'
 import { useResetPasswordMutation } from '@features/auth/authApi.ts'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useSearchParams } from 'react-router-dom'
 import { Button } from '@components/chakra/button.tsx'
-import useGetQueryParams from '@hooks/useGetQueryParams.ts'
 
-interface PasswordRecoveryFormValues {
+export type PasswordRecoveryFormInput = {
 	password: string
 	confirmPassword: string
 }
 
 const ResetPassword = () => {
-	const queryParams = useGetQueryParams()
+	const [queryParams] = useSearchParams()
 	const [forgotPassword, { isLoading, isSuccess }] = useResetPasswordMutation()
 
 	const token = queryParams.get('token')
@@ -29,7 +28,7 @@ const ResetPassword = () => {
 		)
 	}
 
-	const submitHandler = ({ password, confirmPassword }: PasswordRecoveryFormValues) => {
+	const submitHandler = ({ password, confirmPassword }: PasswordRecoveryFormInput) => {
 		forgotPassword({
 			email,
 			token,

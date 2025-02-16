@@ -13,10 +13,10 @@ interface EditUserProfileValues {
 }
 
 const EditProfile = () => {
-	const [updateUser, { isLoading, isError, isSuccess, error }] = useUpdateUserMutation()
+	const [updateUser, { isLoading, isSuccess }] = useUpdateUserMutation()
 
 	const submitHandler = ({ name, age }: EditUserProfileValues) => {
-		updateUser({ name, age })
+		updateUser({ name, age: age + '' })
 	}
 
 	useEffect(() => {
@@ -26,14 +26,6 @@ const EditProfile = () => {
 				type: 'success',
 			})
 			editUserProfileFormik.resetForm()
-		}
-		if (isError) {
-			if ((error as any).data.message) {
-				toaster.create({
-					description: (error as any).data.message,
-					type: 'error',
-				})
-			}
 		}
 	}, [isLoading])
 

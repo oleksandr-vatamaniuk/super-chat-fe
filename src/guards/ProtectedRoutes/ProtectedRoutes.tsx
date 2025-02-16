@@ -10,13 +10,13 @@ const ProtectedRoutes = () => {
 	const token = useSelector(selectAccessToken)
 	const user = useSelector(selectUser)
 
-	const { isLoading, isError } = useGetCurrentUserQuery(null, {
+	const { isLoading, isError } = useGetCurrentUserQuery(undefined, {
 		skip: !token,
 		refetchOnMountOrArgChange: true,
 	})
 
 	const { isLoading: isLoadingChats, data: chatData } = useGetChatsQuery(undefined, {
-		skip: !token,
+		skip: !token || isError,
 		refetchOnMountOrArgChange: true,
 	})
 

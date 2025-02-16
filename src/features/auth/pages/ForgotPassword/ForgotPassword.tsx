@@ -4,9 +4,9 @@ import * as Yup from 'yup'
 import { Link as ReactRouterLink } from 'react-router'
 import { TextField } from '@components/index.ts'
 import { Button } from '@components/chakra/button.tsx'
-import { useForgotPasswordMutation } from '@features/auth/authApi.ts'
 import { useEffect } from 'react'
 import { toaster } from '@components/chakra/toaster.tsx'
+import { useForgotPasswordMutation } from '@features/auth/authApi.ts'
 
 interface ForgotPasswordFormValues {
 	email: string
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
 						<FormikProvider value={forgotPasswordFormik}>
 							<form onSubmit={forgotPasswordFormik.handleSubmit}>
 								<TextField
-									label='Email Adress'
+									label='Email Address'
 									name='email'
 									type='email'
 									placeholder='Enter your email adress'

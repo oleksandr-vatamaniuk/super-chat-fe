@@ -37,8 +37,10 @@
 			"@store/*": ["./store/*"],
 			"@features/*": ["./features/*"],
 			"@utils/*": ["./utils/*"],
+			"@testUtils/*": ["./test-utils/*"],
 			"@hooks/*": ["./hooks/*"],
 			"@guards": ["./guards"],
+			"@types": ["./types"],
 			"@guards/*": ["./guards/*"]
 		}
 	},

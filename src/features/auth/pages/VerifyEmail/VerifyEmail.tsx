@@ -1,13 +1,12 @@
+import { useEffect } from 'react'
 import { Center, Heading, Text, Stack, Box } from '@chakra-ui/react'
 import { useVerifyUserMutation } from '@features/auth/authApi.ts'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toaster } from '@components/chakra/toaster.tsx'
-import { useEffect } from 'react'
 import { Button } from '@components/chakra/button.tsx'
-import useGetQueryParams from '@hooks/useGetQueryParams.ts'
 
 const VerifyEmail = () => {
-	const queryParams = useGetQueryParams()
+	const [queryParams] = useSearchParams()
 	const navigate = useNavigate()
 	const [verifyUser, { isSuccess, isLoading, isError }] = useVerifyUserMutation()
 

@@ -4,17 +4,18 @@ import { RootState } from '@store/store.ts'
 import { setOnlineUsers } from '@features/chat/chatSlice.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 import apiSlice from '@store/apiSlice.ts'
+import { GenericResponse, ChatItem, MessageResponse } from '@types'
 
 export const chatApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getMessages: builder.query({
+		getMessages: builder.query<MessageResponse[], string>({
 			query(id) {
 				return {
 					url: `/message/${id}`,
 				}
 			},
 		}),
-		findMessages: builder.mutation({
+		findMessages: builder.mutation<MessageResponse[], string>({
 			query(searchText) {
 				return {
 					method: 'POST',
@@ -26,7 +27,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		getChats: builder.query({
+		getChats: builder.query<ChatItem[], void>({
 			query() {
 				return {
 					url: `/chat`,
@@ -34,8 +35,8 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: ['Chats'],
 		}),
-		deleteChat: builder.mutation({
-			query(participantId: string) {
+		deleteChat: builder.mutation<GenericResponse & { id: string }, string>({
+			query(participantId) {
 				console.log(participantId)
 				return {
 					method: 'DELETE',
@@ -54,7 +55,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		sendMessage: builder.mutation({
+		sendMessage: builder.mutation<MessageResponse, { receiverId: string; message: string }>({
 			query({ receiverId, message }) {
 				return {
 					method: 'POST',
@@ -67,7 +68,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 			},
 			async onQueryStarted({ receiverId, message }, { dispatch, queryFulfilled, getState }) {
 				const user = (getState() as RootState).user.user!
-				const currentChatParticipant = (getState() as RootState).chat.currentChatParticipant
+				const currentChatParticipant = (getState() as RootState).chat.currentChatParticipant!
 
 				const newMessage = {
 					_id: nanoid(8),
@@ -115,7 +116,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		markAsReadMessages: builder.mutation({
+		markAsReadMessages: builder.mutation<void, { chatId: string }>({
 			queryFn({ chatId }) {
 				const socket = WebSocket.getInstance()
 				return new Promise((resolve, reject) => {
@@ -154,7 +155,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		websocketConnect: builder.query({
+		websocketConnect: builder.query<{ isWebsocketConnected: boolean }, void>({
 			queryFn: () => ({ data: { isWebsocketConnected: false } }),
 			async onCacheEntryAdded(_, { cacheDataLoaded, updateCachedData, cacheEntryRemoved, dispatch, getState }) {
 				const socket = WebSocket.getInstance()

@@ -4,11 +4,11 @@ import { Avatar } from '@components/chakra/avatar.tsx'
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from '@components/chakra/popover.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { useSelector } from 'react-redux'
-import { selectUser, User } from '@features/user/userSlice.ts'
+import { selectUser } from '@features/user/userSlice.ts'
 import { selectIsUserOnline } from '@features/chat/chatSlice.ts'
 
 const UserProfile = () => {
-	const user = useSelector(selectUser) as User
+	const user = useSelector(selectUser) || { _id: null, name: '', avatar: '' }
 	const isUserOnline = useSelector((state) => selectIsUserOnline(state, user?._id!))
 
 	return (
@@ -16,12 +16,13 @@ const UserProfile = () => {
 			alignItems='center'
 			wrap='wrap'
 			gap={{ base: 1, md: 2, lg: 4 }}
+			data-testid='userProfile'
 		>
 			<Box>
 				<Avatar
 					colorPalette='blue'
 					size='xl'
-					name={user.name}
+					name={user.name || ''}
 					src={user.avatar || ''}
 				>
 					{isUserOnline && (
@@ -50,6 +51,7 @@ const UserProfile = () => {
 					color='brand.heading'
 					fontSize='sm'
 					fontWeight='semibold'
+					data-testid='userName'
 				>
 					{user.name}
 				</Text>

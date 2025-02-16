@@ -1,9 +1,10 @@
 import apiSlice from '@store/apiSlice.ts'
 import { setUser } from '@features/user/userSlice.ts'
+import { IUser } from '@types'
 
 export const userApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getCurrentUser: builder.query({
+		getCurrentUser: builder.query<IUser, void>({
 			query() {
 				return {
 					url: '/user',
@@ -11,27 +12,25 @@ export const userApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 			providesTags: ['User'],
-			transformResponse: (result: { user: any }) => result.user,
+			transformResponse: (result: { user: IUser }) => result.user,
 			async onQueryStarted(_args, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled
 					dispatch(setUser(data))
-					console.log('set user')
 				} catch (error) {
 					console.log(error)
 				}
 			},
 		}),
-		getUserById: builder.query({
+		getUserById: builder.query<IUser, string>({
 			query(id) {
-				console.log('get user by id')
 				return {
 					url: `/user/${id}`,
 					credentials: 'include',
 				}
 			},
 		}),
-		updateUser: builder.mutation({
+		updateUser: builder.mutation<IUser, { name: string; age: string }>({
 			query(body) {
 				return {
 					method: 'POST',
@@ -42,7 +41,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			},
 			invalidatesTags: ['User'],
 		}),
-		updateAvatar: builder.mutation({
+		updateAvatar: builder.mutation<IUser, FormData>({
 			query(body) {
 				return {
 					method: 'PATCH',
@@ -53,7 +52,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			},
 			invalidatesTags: ['User'],
 		}),
-		updateUserPassword: builder.mutation({
+		updateUserPassword: builder.mutation<IUser, { oldPassword: string; newPassword: string }>({
 			query(body) {
 				return {
 					method: 'PATCH',
@@ -64,7 +63,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			},
 			invalidatesTags: ['User'],
 		}),
-		findUsersByName: builder.mutation({
+		findUsersByName: builder.mutation<IUser[], string>({
 			query(name) {
 				return {
 					method: 'POST',

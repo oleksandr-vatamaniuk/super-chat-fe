@@ -10,8 +10,8 @@ const Navigation = () => {
 	const navigate = useNavigate()
 	const [logOut, { isLoading, isSuccess }] = useLogOutMutation()
 
-	const onLogOutHandler = async () => {
-		await logOut(null)
+	const onLogOutHandler = () => {
+		logOut(undefined)
 	}
 
 	useEffect(() => {
@@ -81,6 +81,7 @@ const Navigation = () => {
 					onClick={onLogOutHandler}
 					variant='subtle'
 					w='full'
+					data-testid='logoutBtn'
 				>
 					<MdExitToApp />
 					Logout

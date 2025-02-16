@@ -16,7 +16,7 @@ const TextField: FC<TextFieldProps> = ({ label, name, ...props }) => {
 			errorText={meta.error}
 		>
 			<Input
-				id={name}
+				data-testid={name}
 				{...field}
 				{...props}
 			/>

@@ -7,30 +7,28 @@ import { toaster } from '@components/chakra/toaster.tsx'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
-type FileType = File | null
-
 const ChangeAvatar = () => {
-	const [file, setFile] = useState<FileType>(null)
+	const [files, setFiles] = useState<File[]>([])
 	const [imageSrc, setImageSrc] = useState<string>('')
 	const [updateAvatar, { isLoading, isSuccess }] = useUpdateAvatarMutation()
 
 	const submitHandler = () => {
-		if (file) {
+		if (files) {
 			const formData = new FormData()
-			formData.append('image', file)
+			formData.append('image', files[0])
 			updateAvatar(formData)
 		}
 	}
 
 	const handleFileChange = (e: FileUploadFileChangeDetails) => {
-		const selectedFile = e.acceptedFiles[0] || null
-		setFile(selectedFile)
-		setImageSrc(selectedFile ? URL.createObjectURL(selectedFile) : '')
+		setFiles(e.acceptedFiles)
+		const image = e.acceptedFiles[0]
+		setImageSrc(image ? URL.createObjectURL(image) : '')
 	}
 
 	useEffect(() => {
 		if (isSuccess) {
-			setFile(null)
+			setFiles([])
 			setImageSrc('')
 			toaster.create({
 				title: 'Image updated successfully!',
@@ -68,8 +66,9 @@ const ChangeAvatar = () => {
 					onFileChange={handleFileChange}
 					disabled={isLoading}
 				>
-					{!file ? (
+					{files.length === 0 ? (
 						<FileUploadDropzone
+							data-testid='dropzone'
 							label='Drag and drop or click here to upload'
 							description='.png, .jpg up to 5MB'
 						/>
@@ -82,6 +81,10 @@ const ChangeAvatar = () => {
 							bgColor='brand.grey.100'
 						>
 							<Image
+								data-testid='preview'
+								borderStyle='solid'
+								borderWidth='1px'
+								borderColor='brand.grey.200'
 								boxSize='150px'
 								borderRadius='full'
 								fit='cover'
@@ -89,10 +92,12 @@ const ChangeAvatar = () => {
 							/>
 						</Center>
 					)}
-					<FileUploadList
-						showSize
-						clearable
-					/>
+					{files.length !== 0 && (
+						<FileUploadList
+							showSize
+							clearable
+						/>
+					)}
 				</FileUploadRoot>
 			</Box>
 			<Button

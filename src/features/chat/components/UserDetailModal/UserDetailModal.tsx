@@ -14,7 +14,7 @@ import { Button } from '@components/chakra/button.tsx'
 const UserDetailModal: FC<{ disabled?: boolean }> = ({ disabled = true }) => {
 	const navigate = useNavigate()
 	const [isOnline] = useState(false)
-	// @ts-ignore
+
 	const participant = useSelector(selectCurrentParticipant)
 
 	const avatar = participant?.avatar || ''
@@ -23,7 +23,7 @@ const UserDetailModal: FC<{ disabled?: boolean }> = ({ disabled = true }) => {
 	const [deleteChat, { isLoading, isSuccess }] = useDeleteChatMutation()
 
 	const onDeleteChat = () => {
-		deleteChat(participant?._id as string)
+		deleteChat(participant?._id)
 	}
 
 	useEffect(() => {
@@ -49,6 +49,7 @@ const UserDetailModal: FC<{ disabled?: boolean }> = ({ disabled = true }) => {
 					color='brand.grey.250'
 					variant='ghost'
 					disabled={disabled}
+					data-testid='deleteChatTrigger'
 				>
 					<BsThreeDotsVertical />
 				</Button>

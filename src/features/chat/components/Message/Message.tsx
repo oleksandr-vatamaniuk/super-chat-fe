@@ -18,7 +18,16 @@ type MessageProps = MessageVariantProps & {
 	showAvatar?: boolean
 }
 
-const Message: FC<MessageProps> = ({ id, name, time, text, avatar, variant, showName = true, showAvatar = true }) => {
+const Message: FC<MessageProps> = ({
+	id,
+	name,
+	time,
+	text,
+	avatar = '',
+	variant,
+	showName = true,
+	showAvatar = true,
+}) => {
 	const recipe = useSlotRecipe({ key: 'message' })
 	const styles = recipe({ variant })
 

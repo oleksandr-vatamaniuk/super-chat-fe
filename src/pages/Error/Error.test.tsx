@@ -1,15 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import Error from './Error'
-import { ChakraProvider } from '@chakra-ui/react'
-import config from '@theme/theme.ts'
+import renderWithChakra from '@testUtils/renderWithChakra.tsx'
 
 describe('Error component', () => {
 	test('renders the Error component', () => {
-		render(
-			<ChakraProvider value={config}>
-				<Error />
-			</ChakraProvider>,
-		)
+		renderWithChakra(<Error />)
 
 		// Check for the image element
 		const image = screen.getByAltText('Waving hand emoji')

@@ -2,10 +2,13 @@ import { logOut, setCredentials } from '@features/auth/authSlice.ts'
 import { resetChatState } from '@features/chat/chatSlice.ts'
 import apiSlice from '@store/apiSlice.ts'
 import { setUser } from '@features/user/userSlice.ts'
+import { SignInFormInput } from '@features/auth/pages/Login/Login.tsx'
+import { GenericResponse } from '@types'
+import { PasswordRecoveryFormInput } from '@features/auth/pages/ResetPassword/ResetPassword.tsx'
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		login: builder.mutation({
+		login: builder.mutation<{ accessToken: string }, SignInFormInput>({
 			query(data) {
 				return {
 					url: '/auth/login',
@@ -22,7 +25,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		loginWithGoogle: builder.mutation({
+		loginWithGoogle: builder.mutation<{ accessToken: string }, string>({
 			query(token) {
 				return {
 					url: '/auth/google',
@@ -41,7 +44,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		logOut: builder.mutation({
+		logOut: builder.mutation<void, void>({
 			query() {
 				return {
 					method: 'POST',
@@ -61,7 +64,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		registerUser: builder.mutation({
+		registerUser: builder.mutation<GenericResponse, { email: string; password: string; age?: string; name: string }>({
 			query(data) {
 				return {
 					url: '/auth/register',
@@ -70,7 +73,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		verifyUser: builder.mutation({
+		verifyUser: builder.mutation<GenericResponse, { email: string; verificationToken: string }>({
 			query(data) {
 				return {
 					url: '/auth/verify_email',
@@ -79,7 +82,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		forgotPassword: builder.mutation({
+		forgotPassword: builder.mutation<GenericResponse, { email: string }>({
 			query(data) {
 				return {
 					url: '/auth/forgot_password',
@@ -88,7 +91,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		resetPassword: builder.mutation({
+		resetPassword: builder.mutation<GenericResponse, PasswordRecoveryFormInput & { email: string; token: string }>({
 			query(data) {
 				return {
 					url: '/auth/reset_password',
@@ -97,7 +100,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
-		resendVerificationEmail: builder.mutation({
+		resendVerificationEmail: builder.mutation<GenericResponse, string>({
 			query(email) {
 				return {
 					url: '/auth/resend_verify_email',

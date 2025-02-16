@@ -8,7 +8,7 @@ import { CheckBoxField, PasswordField, TextField } from '@components'
 import { useRegisterUserMutation } from '@features/auth/authApi.ts'
 import { toaster } from '@components/chakra/toaster.tsx'
 
-interface SignUpFormValues {
+export interface SignUpFormInput {
 	name: string
 	age?: string
 	email: string
@@ -21,11 +21,11 @@ const SignUp = () => {
 	const navigate = useNavigate()
 	const [registerUser, { isLoading, isSuccess }] = useRegisterUserMutation()
 
-	const submitHandler = async ({ email, password, age, name }: SignUpFormValues) => {
+	const submitHandler = async ({ email, password, age = '', name }: SignUpFormInput) => {
 		registerUser({
 			email,
 			password,
-			age,
+			age: age + '',
 			name,
 		})
 	}
@@ -72,7 +72,6 @@ const SignUp = () => {
 		onSubmit: submitHandler,
 	})
 
-	// TODO number input
 	return (
 		<Box
 			display='flex'
@@ -111,7 +110,6 @@ const SignUp = () => {
 								name='name'
 								type='text'
 								placeholder='Enter your name'
-								required
 							/>
 							<TextField
 								label='Age'
@@ -125,24 +123,18 @@ const SignUp = () => {
 							name='email'
 							type='email'
 							placeholder='Enter your email adress'
-							required
 						/>
 						<PasswordField
 							label='Password'
 							name='password'
 							placeholder='Enter your password'
-							required
 						/>
 						<PasswordField
 							label='Confim Password'
 							name='confirmPassword'
 							placeholder='Enter your new password again'
-							required
 						/>
-						<CheckBoxField
-							type='checkbox'
-							name='terms'
-						>
+						<CheckBoxField name='terms'>
 							I agree to Product&nbsp;
 							<Link asChild>
 								<NavLink to='/privacyPolicy'>Terms and Policy.</NavLink>

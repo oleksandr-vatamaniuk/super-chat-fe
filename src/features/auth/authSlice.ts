@@ -29,6 +29,6 @@ const authSlice = createSlice({
 
 export const { setCredentials, logOut } = authSlice.actions
 
-export const selectAccessToken = (state: RootState) => state.auth.accessToken
+export const selectAccessToken = (state: RootState): string | null => state.auth.accessToken
 
 export default authSlice.reducer

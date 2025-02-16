@@ -16,7 +16,7 @@ const PasswordField: FC<PassWordFieldProps> = ({ label, name, ...props }) => {
 			errorText={meta.error}
 		>
 			<PasswordInput
-				id={name}
+				data-testid={name}
 				{...field}
 				{...props}
 			/>

@@ -1,8 +1,12 @@
 import { Box, Heading, HStack, Center } from '@chakra-ui/react'
 import { Outlet } from 'react-router-dom'
 import { TabLink } from '@features/user/components'
+import { useSelector } from 'react-redux'
+import { selectUser } from '@features/user/userSlice.ts'
 
 const SettingsLayout = () => {
+	const { authProvider } = useSelector(selectUser) || {}
+
 	return (
 		<Center md={{ mt: 14 }}>
 			<Box
@@ -20,7 +24,7 @@ const SettingsLayout = () => {
 				>
 					<TabLink to='edit-profile'>Edit Information</TabLink>
 					<TabLink to='change-avatar'>User Avatar</TabLink>
-					<TabLink to='change-password'>Change Password</TabLink>
+					{authProvider === 'MAIL' && <TabLink to='change-password'>Change Password</TabLink>}
 				</HStack>
 				<Box pt={{ base: 6, md: 9 }}>
 					<Outlet />

@@ -1,9 +1,9 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@store/store.ts'
-import { User } from '@features/user/userSlice.ts'
+import { IUser } from '@types'
 
 type ChatState = {
-	currentChatParticipant: User | null
+	currentChatParticipant: IUser | null
 	onlineUsers: Array<string>
 }
 
@@ -16,10 +16,10 @@ const chatSlice = createSlice({
 	name: 'chat',
 	initialState,
 	reducers: {
-		setCurrentParticipant: (state, action) => {
+		setCurrentParticipant: (state, action: PayloadAction<IUser | null>) => {
 			state.currentChatParticipant = action.payload
 		},
-		setOnlineUsers: (state, action) => {
+		setOnlineUsers: (state, action: PayloadAction<string[]>) => {
 			state.onlineUsers = action.payload
 		},
 		resetChatState: () => {

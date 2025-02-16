@@ -6,7 +6,7 @@ import { Chat, ChatList, ChatWindow } from '@features/chat/pages'
 import { ChangeAvatar, ChangePassword, EditProfile } from '@features/user/pages'
 import { TermsAndPolicy, Error } from '@pages'
 import { MainLayout, SettingsLayout } from '@features/user/layouts'
-import { AnonymousRoutes, ProtectedRoutes } from '@guards'
+import { AnonymousRoutes, ProtectedRoutes, RestrictGoogleUsers } from '@guards'
 import AuthLayout from '@features/auth/layouts/AuthLayout/AuthLayout.tsx'
 
 function App() {
@@ -97,10 +97,12 @@ function App() {
 								path={'change-avatar'}
 								element={<ChangeAvatar />}
 							/>
-							<Route
-								path={'change-password'}
-								element={<ChangePassword />}
-							/>
+							<Route element={<RestrictGoogleUsers />}>
+								<Route
+									path={'change-password'}
+									element={<ChangePassword />}
+								/>
+							</Route>
 						</Route>
 					</Route>
 				</Route>

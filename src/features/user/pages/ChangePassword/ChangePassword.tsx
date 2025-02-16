@@ -14,7 +14,7 @@ interface ChangePasswordValues {
 }
 
 const ChangePassword = () => {
-	const [updateUserPassword, { isLoading, isError, isSuccess, error }] = useUpdateUserPasswordMutation()
+	const [updateUserPassword, { isLoading, isSuccess }] = useUpdateUserPasswordMutation()
 
 	const submitHandler = ({ oldPassword, newPassword }: ChangePasswordValues) => {
 		updateUserPassword({ oldPassword, newPassword })
@@ -27,14 +27,6 @@ const ChangePassword = () => {
 				type: 'success',
 			})
 			changePasswordFormik.resetForm()
-		}
-		if (isError) {
-			if ((error as any).data.message) {
-				toaster.create({
-					description: (error as any).data.message,
-					type: 'error',
-				})
-			}
 		}
 	}, [isLoading])
 

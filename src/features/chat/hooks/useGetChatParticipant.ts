@@ -28,7 +28,6 @@ const useGetChatParticipant = (chatId: string) => {
 	const isLoading = isChatsLoading || isUserLoading
 
 	const isError = isUserError || (isOffline && !isLoading && !userData)
-	console.log(isError)
 
 	return { data: userData, isLoading, isError, isSuccess }
 }

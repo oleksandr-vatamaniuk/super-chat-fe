@@ -3,7 +3,7 @@ import { Box, Text } from '@chakra-ui/react'
 import { Checkbox } from '@components/chakra/checkbox.tsx'
 
 // @ts-ignore
-const CheckBoxField = ({ type, name, children, ...props }) => {
+const CheckBoxField = ({ name, children, ...props }) => {
 	const [field, meta] = useField(name)
 
 	return (
