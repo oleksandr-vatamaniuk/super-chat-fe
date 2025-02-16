@@ -19,13 +19,13 @@ const SearchModal = () => {
 	const [open, setOpen] = useState(false)
 	const [searchText, setSearchText] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
-	const user = useSelector(selectUser) || {}
+	const user = useSelector(selectUser) ?? { avatar: '', _id: '' }
 	const isOffline = useIsOffline()
 	const navigate = useNavigate()
 
 	const { participants } = useGetChatsQuery(undefined, {
 		selectFromResult: ({ data }) => ({
-			participants: data?.map((item) => item.participant) ?? [],
+			participants: data?.map((item) => item.participant!),
 		}),
 	})
 
@@ -96,11 +96,12 @@ const SearchModal = () => {
 
 	const renderResults = () => {
 		return messages.map(({ _id, message, senderId, receiverId, createdAt }: MessageResponse, index: number) => {
-			// @ts-ignore
-			const name = senderId === user._id ? 'You' : participants.find((item: IUser) => item._id === senderId).name
-			// @ts-ignore
+			const name =
+				senderId === user._id ? 'You' : (participants as any).find((item: IUser) => item._id === senderId).name
 			const avatar =
-				senderId === user._id ? user.avatar : participants.find((item: IUser) => item._id === senderId).avatar || ''
+				senderId === user._id
+					? user.avatar
+					: (participants as any).find((item: IUser) => item._id === senderId).avatar || ''
 
 			const clickHandler = () => {
 				setOpen(false)
