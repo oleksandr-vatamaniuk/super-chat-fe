@@ -2,7 +2,7 @@ import { Box, Stack, Text } from '@chakra-ui/react'
 import { GoInbox } from 'react-icons/go'
 import { FC } from 'react'
 
-const NewChatModalEmptyState: FC<{ searchQuery: string }> = ({ searchQuery }) => (
+const ModalEmptyState: FC<{ searchQuery: string }> = ({ searchQuery }) => (
 	<Stack
 		p={8}
 		alignItems='center'
@@ -23,4 +23,4 @@ const NewChatModalEmptyState: FC<{ searchQuery: string }> = ({ searchQuery }) =>
 	</Stack>
 )
 
-export default NewChatModalEmptyState
+export default ModalEmptyState

@@ -7,9 +7,8 @@ import { Button } from '@components/chakra/button.tsx'
 import { Avatar } from '@components/chakra/avatar.tsx'
 import useDebounce from '@hooks/useDebounce.ts'
 import { useFindUsersByNameMutation } from '@features/user/userApi.ts'
-import NewChatModalLoadingState from '@features/chat/components/NewChatModal/NewChatModalLoadingState.tsx'
-import NewChatModalEmptyState from '@features/chat/components/NewChatModal/NewChatModalEmptyState.tsx'
 import { IUser } from '@types'
+import { ModalEmptyState, ModalLoadingState } from '@features/chat/components/ModalStates'
 
 const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 	const [searchQuery, setSearchQuery] = useState('')
@@ -86,6 +85,7 @@ const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 					maxWidth='136px'
 					size='sm'
 					disabled={disabled}
+					data-testid='newChatTrigger'
 				>
 					<FaPlus />
 					New Chat
@@ -94,6 +94,7 @@ const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 			<DialogContent>
 				<DialogBody p={1}>
 					<Input
+						data-testid='searchUsers'
 						id='searchUsers'
 						onChange={handleSearchChange}
 						ref={inputRef}
@@ -104,10 +105,10 @@ const NewChatModal: FC<{ disabled: boolean }> = ({ disabled }) => {
 						gap={0}
 						data-testid='newChatStack'
 					>
-						{isLoading && <NewChatModalLoadingState />}
+						{isLoading && <ModalLoadingState />}
 						{!isLoading && results.length > 0 && renderResults()}
 						{!isLoading && results.length === 0 && debouncedSearchQuery.length > 0 && (
-							<NewChatModalEmptyState searchQuery={searchQuery} />
+							<ModalEmptyState searchQuery={searchQuery} />
 						)}
 					</Stack>
 				</DialogBody>

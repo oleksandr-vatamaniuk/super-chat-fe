@@ -26,7 +26,6 @@ const Login = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		console.log(import.meta.env.PROD)
 		const token = queryParams.get('token')
 
 		if (token) {
@@ -51,7 +50,6 @@ const Login = () => {
 			navigate('/chat')
 		}
 		if (isError) {
-			console.log(error)
 			if ((error as any).status === 400 && (error as any).data.message === 'Please verify your email') {
 				setOpenResendEmailModal(true)
 			}

@@ -11,6 +11,7 @@ const ChatListLoadingState = () => {
 			h='full'
 			borderRightWidth={chatId ? '1px' : 0}
 			borderRightColor='brand.divider'
+			data-testid='chatListLoadingState'
 		>
 			{!chatId && (
 				<SimpleGrid

@@ -11,6 +11,7 @@ export const SkeletonCircle = React.forwardRef<HTMLDivElement, SkeletonCirclePro
 		const { size, ...rest } = props
 		return (
 			<Circle
+				role='progressbar'
 				size={size}
 				asChild
 				ref={ref}

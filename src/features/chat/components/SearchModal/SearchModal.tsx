@@ -1,19 +1,18 @@
-import { Box, HStack, Input, Stack, Text, Highlight, Skeleton, Separator } from '@chakra-ui/react'
+import { Box, HStack, Input, Stack, Text, Highlight, Separator } from '@chakra-ui/react'
 import { LuSearch } from 'react-icons/lu'
-import { GoInbox } from 'react-icons/go'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { DialogBody, DialogContent, DialogRoot, DialogTrigger } from '@components/chakra/dialog.tsx'
 import { Button } from '@components/chakra/button.tsx'
 import { Avatar } from '@components/chakra/avatar.tsx'
 import useDebounce from '@hooks/useDebounce.ts'
 import { useFindMessagesMutation, useGetChatsQuery } from '@features/chat/chatApi.ts'
-import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@features/user/userSlice.ts'
 import { extractTime } from '@utils/exactTime.ts'
 import useIsOffline from '@hooks/useIsOffline.ts'
 import { useNavigate } from 'react-router-dom'
 import { IUser, MessageResponse } from '@types'
+import { ModalEmptyState, ModalLoadingState } from '@features/chat/components/ModalStates'
 
 const SearchModal = () => {
 	const [open, setOpen] = useState(false)
@@ -42,57 +41,6 @@ const SearchModal = () => {
 			findMessages(debouncedSearchText)
 		}
 	}, [debouncedSearchText, findMessages])
-
-	const renderEmptyState = () => (
-		<Stack
-			p={8}
-			alignItems='center'
-			gap={4}
-		>
-			<Box color='fg.muted'>
-				<GoInbox size={32} />
-			</Box>
-			<Text color='fg.muted'>
-				No results found for{' '}
-				<Box
-					fontWeight='semibold'
-					as='span'
-				>
-					{searchText}
-				</Box>
-			</Text>
-		</Stack>
-	)
-
-	const renderLoadingSkeleton = () => (
-		<Stack gap={2}>
-			{Array(3)
-				.fill(null)
-				.map((_, index) => (
-					<HStack
-						key={index}
-						px={2}
-						py={2.5}
-					>
-						<SkeletonCircle size='11' />
-						<Stack
-							w='full'
-							gap={1}
-						>
-							<Skeleton
-								height='5'
-								width='25%'
-							/>
-							<Skeleton
-								height='5'
-								width='80%'
-							/>
-						</Stack>
-						{index < 2 && <Separator borderColor='brand.grey.100' />}
-					</HStack>
-				))}
-		</Stack>
-	)
 
 	const renderResults = () => {
 		return messages.map(({ _id, message, senderId, receiverId, createdAt }: MessageResponse, index: number) => {
@@ -202,9 +150,11 @@ const SearchModal = () => {
 						placeholder='Search in messages'
 					/>
 					<Stack gap={0}>
-						{isLoading && renderLoadingSkeleton()}
+						{isLoading && <ModalLoadingState />}
 						{!isLoading && messages.length > 0 && renderResults()}
-						{!isLoading && messages.length === 0 && debouncedSearchText.length > 0 && renderEmptyState()}
+						{!isLoading && messages.length === 0 && debouncedSearchText.length > 0 && (
+							<ModalEmptyState searchQuery={searchText} />
+						)}
 					</Stack>
 				</DialogBody>
 			</DialogContent>
