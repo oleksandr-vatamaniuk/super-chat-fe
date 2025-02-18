@@ -19,6 +19,7 @@ const EmojiPopover: FC<{ onEmoji: (emoji: string) => void; disabled: boolean }> 
 		>
 			<PopoverTrigger asChild>
 				<Button
+					data-testid='emojiPopoverTriger'
 					color='brand.grey.250'
 					size='md'
 					px={3}

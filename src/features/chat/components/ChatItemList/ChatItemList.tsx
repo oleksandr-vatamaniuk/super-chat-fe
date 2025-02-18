@@ -18,21 +18,16 @@ import { NavLink as ReactRouterLink } from 'react-router-dom'
 import { chatItemRecipe } from '@theme/slotRecipes'
 import { Avatar } from '@components/chakra/avatar.tsx'
 import { getRelativeTime } from '@utils/getRelativeTime.ts'
+import { IUser } from '@types'
 
 type ChatItemVariantProps = RecipeVariantProps<typeof chatItemRecipe>
-
-type Participant = {
-	_id: string
-	avatar: string
-	name: string
-}
 
 type ChatItemProps = ChatItemVariantProps & {
 	isOnline: boolean
 	unreadMessagesCount: number
 	messageTime: string
 	messageText: string
-	participant: Participant
+	participant: IUser
 }
 
 const ChatItemList: FC<ChatItemProps> = ({

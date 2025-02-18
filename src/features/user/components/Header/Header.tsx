@@ -28,6 +28,7 @@ const Header = () => {
 				</Box>
 			)}
 			<Box
+				role='heading'
 				as='header'
 				w='full'
 				bg='white'

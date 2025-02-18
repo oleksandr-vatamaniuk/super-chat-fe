@@ -14,6 +14,7 @@ const ChatListEmptyState = () => {
 			p={8}
 			alignItems='center'
 			gap={4}
+			data-testid='chatListEmptyState'
 		>
 			<Box color='fg.muted'>
 				<BiConversation size={32} />

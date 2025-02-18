@@ -1,8 +1,11 @@
 import { HStack, Separator, Skeleton, Stack } from '@chakra-ui/react'
 import { SkeletonCircle } from '@components/chakra/skeleton.tsx'
 
-const NewChatModalLoadingState = () => (
-	<Stack gap={2}>
+const ModalLoadingState = () => (
+	<Stack
+		data-testid='modalLoadingState'
+		gap={2}
+	>
 		{Array(3)
 			.fill(null)
 			.map((_, index) => (
@@ -31,4 +34,4 @@ const NewChatModalLoadingState = () => (
 	</Stack>
 )
 
-export default NewChatModalLoadingState
+export default ModalLoadingState

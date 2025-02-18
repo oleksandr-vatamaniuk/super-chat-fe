@@ -21,7 +21,7 @@ describe('ForgotPassword', () => {
 	const mockForgotPassword = vi.fn()
 
 	beforeEach(() => {
-		;(useForgotPasswordMutation as any).mockReturnValue([
+		vi.mocked(useForgotPasswordMutation as any).mockReturnValue([
 			mockForgotPassword,
 			{ isSuccess: false, isLoading: false, isError: false },
 		])
